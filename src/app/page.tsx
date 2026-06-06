@@ -7,38 +7,110 @@ import ProfileModal from "@/components/ProfileModal";
 
 const teams = teamsData as Team[];
 
+const teamColors: Record<string, string> = {
+  team_00: "#1e293b",
+  team_01: "#6366f1",
+  team_02: "#10b981",
+  team_03: "#f59e0b",
+  team_04: "#ef4444",
+};
+
+function scrollToTeam(teamId: string) {
+  const el = document.getElementById(teamId);
+  if (el) el.scrollIntoView({ behavior: "smooth" });
+}
+
 export default function HomePage() {
   const [selectedMember, setSelectedMember] = useState<{ member: Member; teamName: string } | null>(null);
 
+  const totalMembers = teams.reduce((acc, t) => acc + t.members.length, 0);
+  const teamCount = teams.length - 1;
+
   return (
-    <main className="min-h-screen bg-gray-50">
+    <main className="min-h-screen bg-[#f7f7f5]">
       {/* 헤더 */}
-      <header className="bg-white border-b border-gray-100 sticky top-0 z-40 shadow-sm">
-        <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
-          <div>
-            <h1 className="text-2xl font-bold text-indigo-600">TeamSync</h1>
-            <p className="text-xs text-gray-400 mt-0.5">사내 구성원 디렉토리</p>
-          </div>
-          <div className="text-sm text-gray-400">
-            총 <span className="font-semibold text-gray-700">{teams.reduce((acc, t) => acc + t.members.length, 0)}명</span>
-            {" · "}
-            <span className="font-semibold text-gray-700">{teams.length}</span>개 팀
+      <header className="bg-white border-b border-gray-100 sticky top-0 z-40">
+        <div className="max-w-6xl mx-auto px-8 py-4 flex items-center">
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center text-white text-sm font-bold">C</div>
+            <h1 className="text-base font-bold text-gray-900">커머스프로덕트유닛</h1>
           </div>
         </div>
       </header>
 
-      {/* 팀 섹션 목록 */}
-      <div className="max-w-6xl mx-auto px-6 py-8">
-        {teams.map((team) => (
+      <div className="max-w-6xl mx-auto px-8 py-10">
+        {/* 페이지 타이틀 + 통계 */}
+        <div className="mb-4">
+          <div className="flex items-center gap-3">
+            <h2 className="text-2xl font-bold text-gray-900">유닛 구성</h2>
+            <span className="text-sm text-gray-400">총 {totalMembers}명 · {teamCount}개 팀</span>
+          </div>
+        </div>
+
+        {/* 팀 인덱스 — 클릭 시 해당 섹션으로 스크롤 */}
+        <div className="flex items-center gap-5 mb-10">
+          {teams.slice(1).map((team) => (
+            <button
+              key={team.id}
+              onClick={() => scrollToTeam(team.id)}
+              className="flex items-center gap-1.5 group"
+            >
+              <span
+                className="w-2 h-2 rounded-full shrink-0 transition-transform group-hover:scale-125"
+                style={{ backgroundColor: teamColors[team.id] }}
+              />
+              <span className="text-xs text-gray-500 group-hover:text-gray-800 group-hover:font-medium transition-colors">
+                {team.name}
+              </span>
+            </button>
+          ))}
+        </div>
+
+        {/* 유닛장 단독 섹션 */}
+        {(() => {
+          const unitTeam = teams.find((t) => t.id === "team_00");
+          const leader = unitTeam?.members[0];
+          if (!leader) return null;
+          return (
+            <div className="mb-12 pb-10 border-b-2 border-gray-200">
+              <div className="flex items-center gap-3 mb-6">
+                <span className="w-3 h-3 rounded-full bg-slate-800" />
+                <h3 className="text-lg font-bold text-gray-800">{unitTeam?.name}</h3>
+              </div>
+              <div className="w-36 cursor-pointer" onClick={() => setSelectedMember({ member: leader, teamName: unitTeam?.name ?? "" })}>
+                <div className="relative w-full aspect-[4/3]">
+                  <div className="absolute top-0 left-0 w-2/5 h-[14%] rounded-t-lg bg-slate-700" />
+                  <div className="absolute bottom-0 left-0 right-0 top-[10%] rounded-xl shadow-md hover:shadow-xl hover:-translate-y-1 transition-all bg-gradient-to-br from-slate-800 to-slate-600">
+                    <div className="absolute inset-x-3 top-2 h-1/3 rounded-lg bg-white/10" />
+                    <div className="absolute top-2 right-2 text-base drop-shadow">⭐</div>
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="w-10 h-10 rounded-full flex items-center justify-center text-base font-bold bg-white/20 text-white">
+                        {leader.name[0]}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="mt-2 flex items-center gap-1.5">
+                  <span className="w-2 h-2 rounded-full bg-slate-800" />
+                  <span className="text-sm text-gray-700 font-medium">{leader.name}</span>
+                </div>
+                <span className="text-xs text-gray-400 mt-0.5 block">{leader.position}</span>
+              </div>
+            </div>
+          );
+        })()}
+
+        {/* 4개 팀 */}
+        {teams.filter((t) => t.id !== "team_00").map((team) => (
           <TeamSection
             key={team.id}
             team={team}
+            teamColor={teamColors[team.id] ?? "#6366f1"}
             onMemberClick={(member, teamName) => setSelectedMember({ member, teamName })}
           />
         ))}
       </div>
 
-      {/* 프로필 모달 */}
       {selectedMember && (
         <ProfileModal
           member={selectedMember.member}

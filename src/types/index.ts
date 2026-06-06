@@ -23,6 +23,7 @@ export interface Member {
   name: string;
   role: "leader" | "member";
   position: string;
+  joinedAt?: string;
   avatarUrl?: string;
   tasks: Task[];
   projects: Project[];
