@@ -50,7 +50,7 @@ export default function ProfileModal({ member, teamName, onClose }: Props) {
 
       {/* 바텀 시트 */}
       <div
-        className={`relative w-full rounded-t-3xl shadow-2xl flex flex-col transition-transform duration-300 ease-out max-h-[85vh] ${visible ? "translate-y-0" : "translate-y-full"}`}
+        className={`relative w-full rounded-t-3xl shadow-2xl flex flex-col transition-transform duration-300 ease-out h-[calc(100vh-64px)] ${visible ? "translate-y-0" : "translate-y-full"}`}
       >
         {/* 헤더 (핸들 포함, 색상 통일) */}
         <div className="shrink-0 px-6 pt-4 pb-5 rounded-t-3xl" style={{ backgroundColor: color }}>
