@@ -9,9 +9,6 @@ interface Props {
 }
 
 export default function TeamSection({ team, teamColor, onMemberClick }: Props) {
-  const leader = team.members.find((m) => m.role === "leader");
-  const members = team.members.filter((m) => m.role === "member");
-
   return (
     <section id={team.id} className="mb-14 scroll-mt-20">
       <div className="flex items-center gap-3 mb-6">
@@ -20,21 +17,8 @@ export default function TeamSection({ team, teamColor, onMemberClick }: Props) {
         <span className="text-sm text-gray-400">{team.members.length}명</span>
       </div>
 
-      {leader && (
-        <div className="mb-6 flex justify-start">
-          <div className="w-40">
-            <MemberCard
-              member={leader}
-              teamName={team.name}
-              teamColor={teamColor}
-              onClick={(m) => onMemberClick(m, team.name)}
-            />
-          </div>
-        </div>
-      )}
-
-      <div className="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-8 gap-x-4 gap-y-6">
-        {members.map((m) => (
+      <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-x-4 gap-y-6">
+        {team.members.map((m) => (
           <MemberCard
             key={m.id}
             member={m}
