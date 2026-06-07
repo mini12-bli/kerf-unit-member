@@ -77,8 +77,8 @@ export default function HomePage() {
                 <span className="w-3 h-3 rounded-full bg-slate-800" />
                 <h3 className="text-lg font-bold text-gray-800">{unitTeam?.name}</h3>
               </div>
-              <div className="cursor-pointer group" style={{ width: "200px" }} onClick={() => setSelectedMember({ member: leader, teamName: unitTeam?.name ?? "" })}>
-                <div className="relative overflow-hidden" style={{ width: "200px", height: "150px" }}>
+              <div className="cursor-pointer group" style={{ width: "160px" }} onClick={() => setSelectedMember({ member: leader, teamName: unitTeam?.name ?? "" })}>
+                <div className="relative" style={{ width: "160px", height: "120px" }}>
                   {/* 폴더 탭 */}
                   <div className="absolute top-0 left-0 w-2/5 h-[13%] rounded-t-lg bg-slate-700" style={{ zIndex: 1 }} />
                   {/* 폴더 몸통 */}

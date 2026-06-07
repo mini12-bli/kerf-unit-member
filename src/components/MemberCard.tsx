@@ -64,7 +64,7 @@ export default function MemberCard({ member, teamColor, onClick }: Props) {
 
           {/* 뱃지 */}
           {isLeader && <div className="absolute top-2 right-2 text-base drop-shadow z-10">👑</div>}
-          {newbie && !isLeader && <div className="absolute top-2 right-2 text-base drop-shadow z-10">🌱</div>}
+
           {incoming && <div className="absolute top-2 right-2 text-base drop-shadow z-10">📅</div>}
 
           {/* 아바타 이니셜 (사진 없을 때) */}
@@ -106,7 +106,7 @@ export default function MemberCard({ member, teamColor, onClick }: Props) {
       <div className="mt-2 flex items-center gap-1.5">
         <span className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: incoming ? "#94a3b8" : dot }} />
         <span className={`text-sm font-medium truncate max-w-[80px] ${incoming ? "text-gray-400" : "text-gray-700"}`}>
-          {member.name}
+          {member.name}{newbie && !isLeader ? " 🌱" : ""}
         </span>
       </div>
 
