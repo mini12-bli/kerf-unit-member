@@ -1,11 +1,14 @@
 "use client";
 import { useState } from "react";
 import teamsData from "@/data/teams.json";
-import { Team, Member } from "@/types";
+import unitWorkData from "@/data/unitWork.json";
+import { Team, Member, Project } from "@/types";
 import TeamSection from "@/components/TeamSection";
 import ProfileModal from "@/components/ProfileModal";
+import ProjectList from "@/components/ProjectList";
 
 const teams = teamsData as Team[];
+const unitWork = unitWorkData as Project[];
 
 const teamColors: Record<string, string> = {
   team_00: "#1e293b",
@@ -114,8 +117,8 @@ export default function HomePage() {
                 {/* 업무 폴더 */}
                 <div className="cursor-pointer group" onClick={() => setWorkFolderOpen(true)}>
                   <div className="relative w-full aspect-[4/3]">
-                    <div className="absolute top-0 left-0 w-2/5 h-[14%] rounded-t-lg bg-indigo-700" style={{ zIndex: 1 }} />
-                    <div className="absolute bottom-0 left-0 right-0 top-[10%] rounded-xl shadow-md group-hover:shadow-xl group-hover:-translate-y-1 transition-all bg-gradient-to-br from-indigo-600 to-indigo-400" style={{ zIndex: 1 }}>
+                    <div className="absolute top-0 left-0 w-2/5 h-[14%] rounded-t-lg bg-slate-700" style={{ zIndex: 1 }} />
+                    <div className="absolute bottom-0 left-0 right-0 top-[10%] rounded-xl shadow-md group-hover:shadow-xl group-hover:-translate-y-1 transition-all bg-gradient-to-br from-slate-800 to-slate-600" style={{ zIndex: 1 }}>
                       <div className="absolute inset-x-3 top-2 h-1/3 rounded-lg bg-white/20" />
                       <div className="absolute inset-0 flex items-center justify-center">
                         <span className="text-2xl drop-shadow z-10">📋</span>
@@ -123,7 +126,7 @@ export default function HomePage() {
                     </div>
                   </div>
                   <div className="mt-2 flex items-center gap-1.5">
-                    <span className="w-2 h-2 rounded-full bg-indigo-600" />
+                    <span className="w-2 h-2 rounded-full bg-slate-800" />
                     <span className="text-sm text-gray-700 font-medium">업무</span>
                   </div>
                 </div>
@@ -155,7 +158,7 @@ export default function HomePage() {
         <div className="fixed inset-0 z-50 flex items-end" onClick={() => setWorkFolderOpen(false)}>
           <div className="absolute inset-0 bg-black/40" />
           <div className="relative w-full rounded-t-3xl shadow-2xl bg-white flex flex-col h-[calc(100vh-64px)]" onClick={(e) => e.stopPropagation()}>
-            <div className="shrink-0 px-6 pt-4 pb-5 rounded-t-3xl bg-indigo-600">
+            <div className="shrink-0 px-6 pt-4 pb-5 rounded-t-3xl bg-slate-800">
               <div className="flex justify-center mb-4">
                 <div className="w-10 h-1 rounded-full bg-white/40" />
               </div>
@@ -168,8 +171,12 @@ export default function HomePage() {
                 <h2 className="text-xl font-bold text-white">업무</h2>
               </div>
             </div>
-            <div className="flex-1 overflow-y-auto p-6 bg-white flex items-center justify-center">
-              <p className="text-sm text-gray-400">등록된 업무가 없습니다.</p>
+            <div className="flex-1 overflow-y-auto p-6 bg-white">
+              {unitWork.length > 0 ? (
+                <ProjectList projects={unitWork} />
+              ) : (
+                <p className="text-sm text-gray-400 text-center py-8">등록된 업무가 없습니다.</p>
+              )}
             </div>
           </div>
         </div>
