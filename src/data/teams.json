@@ -145,7 +145,8 @@
         "position": "팀장",
         "tasks": [],
         "projects": [],
-        "events": []
+        "events": [],
+        "avatarUrl": "/mijung-nobg.png"
       },
       {
         "id": "member_012",
