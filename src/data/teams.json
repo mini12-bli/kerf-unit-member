@@ -80,7 +80,8 @@
         "tasks": [],
         "projects": [],
         "events": [],
-        "joinedAt": "2026-04-01"
+        "joinedAt": "2026-04-01",
+        "avatarUrl": "/mirim-nobg.png"
       },
       {
         "id": "member_007",
@@ -90,7 +91,8 @@
         "position": "",
         "tasks": [],
         "projects": [],
-        "events": []
+        "events": [],
+        "avatarUrl": "/yerin-nobg.png"
       },
       {
         "id": "member_008",
@@ -268,7 +270,8 @@
         "position": "",
         "tasks": [],
         "projects": [],
-        "events": []
+        "events": [],
+        "avatarUrl": "/chaeyoung-nobg.png"
       },
       {
         "id": "member_023",
@@ -304,7 +307,8 @@
         "position": "",
         "tasks": [],
         "projects": [],
-        "events": []
+        "events": [],
+        "avatarUrl": "/woojung-nobg.png"
       },
       {
         "id": "member_026",
@@ -365,7 +369,8 @@
         "tasks": [],
         "projects": [],
         "events": [],
-        "joinedAt": "2026-03-24"
+        "joinedAt": "2026-03-24",
+        "avatarUrl": "/seyoung-nobg.png"
       }
     ]
   }
