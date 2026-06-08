@@ -77,39 +77,40 @@ export default function HomePage() {
                 <span className="w-3 h-3 rounded-full bg-slate-800" />
                 <h3 className="text-lg font-bold text-gray-800">{unitTeam?.name}</h3>
               </div>
-              <div className="cursor-pointer group" style={{ width: "160px" }} onClick={() => setSelectedMember({ member: leader, teamName: unitTeam?.name ?? "" })}>
-                <div className="relative" style={{ width: "160px", height: "120px" }}>
-                  {/* 폴더 탭 */}
-                  <div className="absolute top-0 left-0 w-2/5 h-[13%] rounded-t-lg bg-slate-700" style={{ zIndex: 1 }} />
-                  {/* 폴더 몸통 */}
-                  <div className="absolute bottom-0 left-0 right-0 top-[9%] rounded-2xl shadow-lg group-hover:shadow-2xl group-hover:-translate-y-0.5 transition-all bg-gradient-to-br from-slate-800 to-slate-600" style={{ zIndex: 1 }}>
-                    <div className="absolute inset-x-4 top-3 h-[30%] rounded-xl bg-white/10" />
-                    <div className="absolute top-3 right-4 text-2xl drop-shadow-lg">⭐</div>
-                    {/* 아바타 원 (인물 뒤 흐릿하게) */}
-                    <div className="absolute inset-0 flex items-center justify-center" style={{ paddingTop: "10px" }}>
-                      <div className="w-14 h-14 rounded-full bg-white/15" />
+              <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-x-4 gap-y-6">
+                <div className="cursor-pointer group" onClick={() => setSelectedMember({ member: leader, teamName: unitTeam?.name ?? "" })}>
+                  <div className="relative w-full aspect-[4/3]">
+                    {/* 폴더 탭 */}
+                    <div className="absolute top-0 left-0 w-2/5 h-[14%] rounded-t-lg bg-slate-700" style={{ zIndex: 1 }} />
+                    {/* 폴더 몸통 */}
+                    <div className="absolute bottom-0 left-0 right-0 top-[10%] rounded-xl shadow-md group-hover:shadow-xl group-hover:-translate-y-1 transition-all bg-gradient-to-br from-slate-800 to-slate-600" style={{ zIndex: 1 }}>
+                      <div className="absolute inset-x-3 top-2 h-1/3 rounded-lg bg-white/20" />
+                      <div className="absolute top-2 right-2 text-base drop-shadow z-10">⭐</div>
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <div className="w-10 h-10 rounded-full bg-white/15" />
+                      </div>
                     </div>
+                    {/* 인물 사진 */}
+                    <img
+                      src="/mijung-nobg.png"
+                      alt="김미정"
+                      className="absolute object-contain pointer-events-none group-hover:-translate-y-1 transition-transform duration-300"
+                      style={{
+                        height: "78%",
+                        bottom: "0px",
+                        left: "50%",
+                        transform: "translateX(-50%)",
+                        zIndex: 2,
+                        filter: "drop-shadow(0px 4px 8px rgba(0,0,0,0.2))",
+                      }}
+                    />
                   </div>
-                  {/* 인물 사진 — 폴더 중앙에 크게 */}
-                  <img
-                    src="/mijung-nobg.png"
-                    alt="김미정"
-                    className="absolute object-contain pointer-events-none group-hover:-translate-y-1 transition-transform duration-300"
-                    style={{
-                      height: "78%",
-                      bottom: "0px",
-                      left: "50%",
-                      transform: "translateX(-50%)",
-                      zIndex: 2,
-                      filter: "drop-shadow(0px 4px 8px rgba(0,0,0,0.2))",
-                    }}
-                  />
+                  <div className="mt-2 flex items-center gap-1.5">
+                    <span className="w-2 h-2 rounded-full bg-slate-800" />
+                    <span className="text-sm text-gray-700 font-medium">{leader.name}</span>
+                  </div>
+                  <span className="text-xs text-gray-400 mt-0.5 block">{leader.position}</span>
                 </div>
-                <div className="mt-2 flex items-center gap-1.5">
-                  <span className="w-2 h-2 rounded-full bg-slate-800" />
-                  <span className="text-sm text-gray-700 font-medium">{leader.name}</span>
-                </div>
-                <span className="text-xs text-gray-400 mt-0.5 block">{leader.position}</span>
               </div>
             </div>
           );
