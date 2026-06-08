@@ -22,6 +22,7 @@ function scrollToTeam(teamId: string) {
 
 export default function HomePage() {
   const [selectedMember, setSelectedMember] = useState<{ member: Member; teamName: string } | null>(null);
+  const [workFolderOpen, setWorkFolderOpen] = useState(false);
 
   const totalMembers = teams.reduce((acc, t) => acc + t.members.length, 0);
   const teamCount = teams.length - 1;
@@ -78,11 +79,10 @@ export default function HomePage() {
                 <h3 className="text-lg font-bold text-gray-800">{unitTeam?.name}</h3>
               </div>
               <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-x-4 gap-y-6">
+                {/* 유닛장 카드 */}
                 <div className="cursor-pointer group" onClick={() => setSelectedMember({ member: leader, teamName: unitTeam?.name ?? "" })}>
                   <div className="relative w-full aspect-[4/3]">
-                    {/* 폴더 탭 */}
                     <div className="absolute top-0 left-0 w-2/5 h-[14%] rounded-t-lg bg-slate-700" style={{ zIndex: 1 }} />
-                    {/* 폴더 몸통 */}
                     <div className="absolute bottom-0 left-0 right-0 top-[10%] rounded-xl shadow-md group-hover:shadow-xl group-hover:-translate-y-1 transition-all bg-gradient-to-br from-slate-800 to-slate-600" style={{ zIndex: 1 }}>
                       <div className="absolute inset-x-3 top-2 h-1/3 rounded-lg bg-white/20" />
                       <div className="absolute top-2 right-2 text-base drop-shadow z-10">⭐</div>
@@ -90,7 +90,6 @@ export default function HomePage() {
                         <div className="w-10 h-10 rounded-full bg-white/15" />
                       </div>
                     </div>
-                    {/* 인물 사진 */}
                     <img
                       src="/mijung-nobg.png"
                       alt="김미정"
@@ -110,6 +109,23 @@ export default function HomePage() {
                     <span className="text-sm text-gray-700 font-medium">{leader.name}</span>
                   </div>
                   <span className="text-xs text-gray-400 mt-0.5 block">{leader.position}</span>
+                </div>
+
+                {/* 업무 폴더 */}
+                <div className="cursor-pointer group" onClick={() => setWorkFolderOpen(true)}>
+                  <div className="relative w-full aspect-[4/3]">
+                    <div className="absolute top-0 left-0 w-2/5 h-[14%] rounded-t-lg bg-indigo-700" style={{ zIndex: 1 }} />
+                    <div className="absolute bottom-0 left-0 right-0 top-[10%] rounded-xl shadow-md group-hover:shadow-xl group-hover:-translate-y-1 transition-all bg-gradient-to-br from-indigo-600 to-indigo-400" style={{ zIndex: 1 }}>
+                      <div className="absolute inset-x-3 top-2 h-1/3 rounded-lg bg-white/20" />
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <span className="text-2xl drop-shadow z-10">📋</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="mt-2 flex items-center gap-1.5">
+                    <span className="w-2 h-2 rounded-full bg-indigo-600" />
+                    <span className="text-sm text-gray-700 font-medium">업무</span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -133,6 +149,30 @@ export default function HomePage() {
           teamName={selectedMember.teamName}
           onClose={() => setSelectedMember(null)}
         />
+      )}
+
+      {workFolderOpen && (
+        <div className="fixed inset-0 z-50 flex items-end" onClick={() => setWorkFolderOpen(false)}>
+          <div className="absolute inset-0 bg-black/40" />
+          <div className="relative w-full rounded-t-3xl shadow-2xl bg-white flex flex-col h-[calc(100vh-64px)]" onClick={(e) => e.stopPropagation()}>
+            <div className="shrink-0 px-6 pt-4 pb-5 rounded-t-3xl bg-indigo-600">
+              <div className="flex justify-center mb-4">
+                <div className="w-10 h-1 rounded-full bg-white/40" />
+              </div>
+              <div className="flex items-center justify-between mb-4">
+                <span className="text-xs font-medium text-white/70">커머스프로덕트 유닛</span>
+                <button onClick={() => setWorkFolderOpen(false)} className="w-7 h-7 rounded-full bg-white/20 flex items-center justify-center text-white hover:bg-white/30 transition-colors text-sm">✕</button>
+              </div>
+              <div className="flex items-center gap-4">
+                <div className="w-14 h-14 rounded-2xl bg-white/20 flex items-center justify-center text-2xl shrink-0">📋</div>
+                <h2 className="text-xl font-bold text-white">업무</h2>
+              </div>
+            </div>
+            <div className="flex-1 overflow-y-auto p-6 bg-white flex items-center justify-center">
+              <p className="text-sm text-gray-400">등록된 업무가 없습니다.</p>
+            </div>
+          </div>
+        </div>
       )}
     </main>
   );
