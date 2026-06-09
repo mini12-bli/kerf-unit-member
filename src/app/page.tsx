@@ -53,7 +53,7 @@ export default function HomePage() {
                 <button
                   key={team.id}
                   onClick={() => scrollToTeam(team.id)}
-                  className="px-3 py-1 rounded-full text-xs font-semibold text-white transition-all hover:opacity-80 active:scale-95"
+                  className="px-3 py-1 rounded-lg text-xs font-semibold text-white transition-all hover:opacity-80 active:scale-95"
                   style={{ backgroundColor: teamColors[team.id] }}
                 >
                   {shortName[team.id]}
