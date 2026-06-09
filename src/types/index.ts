@@ -8,6 +8,7 @@ export interface Project {
   id: string;
   name: string;
   status: "진행중" | "완료" | "보류";
+  year?: number;
 }
 
 export interface Event {
