@@ -46,7 +46,7 @@ export default function HomePage() {
         {/* 페이지 타이틀 + 통계 */}
         <div className="mb-4">
           <div className="flex items-center gap-3">
-            <h2 className="text-2xl font-bold text-gray-900">커머스프로덕트 유닛 구성</h2>
+            <h2 className="text-lg font-bold text-gray-900">커머스프로덕트 유닛 구성</h2>
             <span className="text-sm text-gray-400">총 {totalMembers}명 · {teamCount}개 팀</span>
           </div>
         </div>
