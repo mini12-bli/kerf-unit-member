@@ -51,23 +51,26 @@ export default function HomePage() {
           </div>
         </div>
 
-        {/* 팀 인덱스 — 클릭 시 해당 섹션으로 스크롤 */}
-        <div className="flex items-center gap-5 mb-10">
-          {teams.slice(1).map((team) => (
-            <button
-              key={team.id}
-              onClick={() => scrollToTeam(team.id)}
-              className="flex items-center gap-1.5 group"
-            >
-              <span
-                className="w-2 h-2 rounded-full shrink-0 transition-transform group-hover:scale-125"
+        {/* 팀 인덱스 — 버튼 형태 */}
+        <div className="flex items-center gap-2 mb-10 flex-wrap">
+          {teams.slice(1).map((team) => {
+            const shortName: Record<string, string> = {
+              team_01: "디프",
+              team_02: "서치",
+              team_03: "트랜",
+              team_04: "버서",
+            };
+            return (
+              <button
+                key={team.id}
+                onClick={() => scrollToTeam(team.id)}
+                className="px-3 py-1.5 rounded-full text-xs font-semibold text-white transition-all hover:opacity-80 active:scale-95"
                 style={{ backgroundColor: teamColors[team.id] }}
-              />
-              <span className="text-xs text-gray-500 group-hover:text-gray-800 group-hover:font-medium transition-colors">
-                {team.name}
-              </span>
-            </button>
-          ))}
+              >
+                {shortName[team.id]}
+              </button>
+            );
+          })}
         </div>
 
         {/* 유닛장 단독 섹션 */}
