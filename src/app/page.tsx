@@ -34,44 +34,37 @@ export default function HomePage() {
     <main className="min-h-screen bg-[#f7f7f5]">
       {/* 헤더 */}
       <header className="bg-white border-b border-gray-100 sticky top-0 z-40">
-        <div className="max-w-6xl mx-auto px-8 py-4 flex items-center">
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center text-white text-sm font-bold">C</div>
-            <h1 className="text-base font-bold text-gray-900">커머스프로덕트유닛</h1>
+        <div className="max-w-6xl mx-auto px-8 py-3">
+          <div className="flex items-center justify-between mb-2">
+            <div className="flex items-center gap-2">
+              <h1 className="text-base font-bold text-gray-900">커머스프로덕트 유닛 구성</h1>
+              <span className="text-xs text-gray-400">총 {totalMembers}명 · {teamCount}개 팀</span>
+            </div>
+          </div>
+          <div className="flex items-center gap-2">
+            {teams.slice(1).map((team) => {
+              const shortName: Record<string, string> = {
+                team_01: "디프",
+                team_02: "서치",
+                team_03: "트랜",
+                team_04: "버서",
+              };
+              return (
+                <button
+                  key={team.id}
+                  onClick={() => scrollToTeam(team.id)}
+                  className="px-3 py-1 rounded-full text-xs font-semibold text-white transition-all hover:opacity-80 active:scale-95"
+                  style={{ backgroundColor: teamColors[team.id] }}
+                >
+                  {shortName[team.id]}
+                </button>
+              );
+            })}
           </div>
         </div>
       </header>
 
       <div className="max-w-6xl mx-auto px-8 py-10">
-        {/* 페이지 타이틀 + 통계 */}
-        <div className="mb-4">
-          <div className="flex items-center gap-3">
-            <h2 className="text-lg font-bold text-gray-900">커머스프로덕트 유닛 구성</h2>
-            <span className="text-sm text-gray-400">총 {totalMembers}명 · {teamCount}개 팀</span>
-          </div>
-        </div>
-
-        {/* 팀 인덱스 — 버튼 형태 */}
-        <div className="flex items-center gap-2 mb-10 flex-wrap">
-          {teams.slice(1).map((team) => {
-            const shortName: Record<string, string> = {
-              team_01: "디프",
-              team_02: "서치",
-              team_03: "트랜",
-              team_04: "버서",
-            };
-            return (
-              <button
-                key={team.id}
-                onClick={() => scrollToTeam(team.id)}
-                className="px-3 py-1.5 rounded-full text-xs font-semibold text-white transition-all hover:opacity-80 active:scale-95"
-                style={{ backgroundColor: teamColors[team.id] }}
-              >
-                {shortName[team.id]}
-              </button>
-            );
-          })}
-        </div>
 
         {/* 유닛장 단독 섹션 */}
         {(() => {
@@ -80,10 +73,6 @@ export default function HomePage() {
           if (!leader) return null;
           return (
             <div className="mb-12 pb-10 border-b-2 border-gray-200">
-              <div className="flex items-center gap-3 mb-6">
-                <span className="w-3 h-3 rounded-full bg-slate-800" />
-                <h3 className="text-lg font-bold text-gray-800">{unitTeam?.name}</h3>
-              </div>
               <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-x-4 gap-y-6">
                 {/* 유닛장 카드 */}
                 <div className="cursor-pointer group" onClick={() => setSelectedMember({ member: leader, teamName: unitTeam?.name ?? "" })}>
