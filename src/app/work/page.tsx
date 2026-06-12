@@ -10,7 +10,7 @@ type ViewMode = "스쿼드별" | "진행상황별";
 const VIEW_MODES: ViewMode[] = ["스쿼드별", "진행상황별"];
 
 const squadOrder: Record<string, number> = {
-  커머스전시: 0, 프로모션전시: 1, 검색: 2, 웰니스: 3, "W케어": 4, 발견: 5, 주문결제: 6, 포스트오더: 7,
+  커머스전시: 0, 프로모션전시: 1, 검색: 2, 웰니스: 3, "W케어": 4, 발견: 5, 주문결제: 6, 포스트오더: 7, 공통: 8,
 };
 const squadColor: Record<string, string> = {
   커머스전시: "#6366f1",
@@ -21,6 +21,7 @@ const squadColor: Record<string, string> = {
   발견: "#ef4444",
   주문결제: "#f97316",
   포스트오더: "#64748b",
+  공통: "#94a3b8",
 };
 
 type Status = Project["status"];
@@ -32,7 +33,7 @@ const STATUS_META: Record<Status, { label: string; dotClass: string; badgeClass:
   DROP: { label: "DROP", dotClass: "bg-gray-300", badgeClass: "bg-gray-100 text-gray-400" },
 };
 
-const SQUADS = ["전체", "커머스전시", "프로모션전시", "검색", "웰니스", "W케어", "발견", "주문결제", "포스트오더"] as const;
+const SQUADS = ["전체", "커머스전시", "프로모션전시", "검색", "웰니스", "W케어", "발견", "주문결제", "포스트오더", "공통"] as const;
 type SquadFilter = typeof SQUADS[number];
 const SQUAD_OPTIONS = SQUADS.filter((s) => s !== "전체");
 

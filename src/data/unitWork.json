@@ -438,5 +438,61 @@
     "year": 2026,
     "squad": "웰니스",
     "date": "2026-06-25"
+  },
+  {
+    "id": "proj_064",
+    "name": "ChatGPT Apps 등록 (국내 MCP)",
+    "status": "진행중",
+    "year": 2026,
+    "squad": "검색",
+    "date": "2026-07-00"
+  },
+  {
+    "id": "proj_065",
+    "name": "카카오 MCP Question 파라미터 적용",
+    "status": "진행중",
+    "year": 2026,
+    "squad": "검색",
+    "date": "2026-07-00"
+  },
+  {
+    "id": "proj_066",
+    "name": "서치 AI 에이전트 구축 (임직원 오픈)",
+    "status": "진행중",
+    "year": 2026,
+    "squad": "검색",
+    "date": "2026-08-00"
+  },
+  {
+    "id": "proj_067",
+    "name": "어필리에이트 채널 검수 자동화 시스템 도입",
+    "status": "진행중",
+    "year": 2026,
+    "squad": "발견",
+    "date": "2026-09-00"
+  },
+  {
+    "id": "proj_068",
+    "name": "SEO/AEO/GEO를 통한 유입 강화",
+    "status": "진행중",
+    "year": 2026,
+    "squad": "공통",
+    "date": "2026-12-00"
+  },
+  {
+    "id": "proj_069",
+    "name": "lms.txt 적용",
+    "status": "진행중",
+    "year": 2026,
+    "squad": "공통",
+    "date": "2026-12-00"
+  },
+  {
+    "id": "proj_070",
+    "name": "라이브 UI 도입 (픽업)",
+    "status": "진행중",
+    "year": 2026,
+    "squad": "공통",
+    "date": "2026-12-00"
   }
 ]
