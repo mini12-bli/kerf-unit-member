@@ -7,8 +7,14 @@ export interface Task {
 export interface Project {
   id: string;
   name: string;
-  status: "진행중" | "완료" | "보류";
+  status: "검토중" | "진행중" | "완료";
   year?: number;
+  team?: string;
+  squad?: string;
+  milestone?: string;
+  expectedMonth?: string;
+  completedDate?: string;
+  date?: string;
 }
 
 export interface Event {
