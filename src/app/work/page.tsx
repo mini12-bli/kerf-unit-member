@@ -43,7 +43,7 @@ function formatMMDD(dateStr?: string) {
   if (!dateStr) return null;
   const [, m, d] = dateStr.split("-");
   if (parseInt(d) === 0) return `${parseInt(m)}월`;
-  return `${parseInt(m)}.${parseInt(d)}`;
+  return `${parseInt(m)}월${parseInt(d)}일`;
 }
 
 function StatusChip({ status, date, completedDate }: { status: Status; date?: string; completedDate?: string }) {
