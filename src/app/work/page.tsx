@@ -51,8 +51,9 @@ function StatusChip({ status, date, completedDate }: { status: Status; date?: st
 
   if (status === "진행중") {
     const label = formatMMDD(date) ?? "진행중";
-    const isFuture = date && date.replace(/-00$/, "-01") > new Date().toISOString().slice(0, 10);
-    const badgeClass = isFuture ? "bg-emerald-100 text-emerald-700" : meta.badgeClass;
+    const normalized = (date ?? "").replace(/-00$/, "-01");
+    const isPastDate = normalized && normalized <= new Date().toISOString().slice(0, 10);
+    const badgeClass = isPastDate ? "bg-green-100 text-green-700" : "bg-blue-100 text-blue-700";
     return (
       <span className={`text-xs px-2 py-0.5 rounded-sm font-medium shrink-0 ${badgeClass}`}>
         {label}
@@ -289,6 +290,14 @@ export default function WorkPage() {
       return true;
     });
 
+  const today = new Date().toISOString().slice(0, 10);
+
+  function isPast(p: Project): boolean {
+    if (p.status !== "진행중") return false;
+    const d = (p.date ?? "").replace(/-00$/, "-01");
+    return !!d && d <= today;
+  }
+
   function applySort(items: Project[]): Project[] {
     if (selectedYear === 2026) {
       return [...items].sort((a, b) => (b.date ?? "").localeCompare(a.date ?? ""));
@@ -301,29 +310,83 @@ export default function WorkPage() {
       return <p className="text-sm text-gray-400 text-center py-12">등록된 업무가 없습니다.</p>;
     }
 
+    const active = filtered.filter((p) => !isPast(p) && p.status !== "완료" && p.status !== "DROP");
+    const past = filtered.filter((p) => isPast(p) || p.status === "완료");
+    const dropped = filtered.filter((p) => p.status === "DROP");
+
     if (viewMode === "스쿼드별") {
-      const base = [...filtered].sort((a, b) => {
-        const sa = a.squad ?? "기타";
-        const sb = b.squad ?? "기타";
-        const squadDiff = (squadOrder[sa] ?? 99) - (squadOrder[sb] ?? 99);
-        if (squadDiff !== 0) return squadDiff;
-        const statusOrd: Record<Status, number> = { 진행중: 0, 검토중: 1, 완료: 2, DROP: 3 };
-        return statusOrd[a.status] - statusOrd[b.status];
-      });
-      return <FlatList projects={applySort(base)} />;
+      return (
+        <>
+          <FlatList projects={applySort(active)} />
+          {past.length > 0 && (
+            <div className="mt-8">
+              <div className="flex items-center gap-2 mb-1">
+                <span className="w-2.5 h-2.5 rounded-full shrink-0 bg-green-500" />
+                <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wide">완료</h3>
+                <span className="text-xs text-gray-400">{past.length}</span>
+              </div>
+              <ul className="bg-white rounded-2xl shadow-sm px-4">
+                {applySort(past).map((p) => <ProjectRow key={p.id} project={p} />)}
+              </ul>
+            </div>
+          )}
+          {dropped.length > 0 && (
+            <div className="mt-8">
+              <div className="flex items-center gap-2 mb-1">
+                <span className="w-2.5 h-2.5 rounded-full shrink-0 bg-gray-300" />
+                <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wide">DROP</h3>
+                <span className="text-xs text-gray-400">{dropped.length}</span>
+              </div>
+              <ul className="bg-white rounded-2xl shadow-sm px-4">
+                {applySort(dropped).map((p) => <ProjectRow key={p.id} project={p} />)}
+              </ul>
+            </div>
+          )}
+        </>
+      );
     }
 
     if (viewMode === "진행상황별") {
-      const statuses: Status[] = ["진행중", "검토중", "완료"];
-      return statuses
-        .filter((s) => filtered.some((p) => p.status === s))
-        .map((s) => (
-          <StatusSection
-            key={s}
-            status={s}
-            projects={applySort(filtered.filter((p) => p.status === s))}
-          />
-        ));
+      return (
+        <>
+          {active.length > 0 && (
+            <div className="mb-8">
+              <div className="flex items-center gap-2 mb-1">
+                <span className="w-2.5 h-2.5 rounded-full shrink-0 bg-blue-500" />
+                <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wide">진행중</h3>
+                <span className="text-xs text-gray-400">{active.length}</span>
+              </div>
+              <ul className="bg-white rounded-2xl shadow-sm px-4">
+                {applySort(active).map((p) => <ProjectRow key={p.id} project={p} />)}
+              </ul>
+            </div>
+          )}
+          {past.length > 0 && (
+            <div className="mb-8">
+              <div className="flex items-center gap-2 mb-1">
+                <span className="w-2.5 h-2.5 rounded-full shrink-0 bg-green-500" />
+                <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wide">완료</h3>
+                <span className="text-xs text-gray-400">{past.length}</span>
+              </div>
+              <ul className="bg-white rounded-2xl shadow-sm px-4">
+                {applySort(past).map((p) => <ProjectRow key={p.id} project={p} />)}
+              </ul>
+            </div>
+          )}
+          {dropped.length > 0 && (
+            <div className="mb-8">
+              <div className="flex items-center gap-2 mb-1">
+                <span className="w-2.5 h-2.5 rounded-full shrink-0 bg-gray-300" />
+                <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wide">DROP</h3>
+                <span className="text-xs text-gray-400">{dropped.length}</span>
+              </div>
+              <ul className="bg-white rounded-2xl shadow-sm px-4">
+                {applySort(dropped).map((p) => <ProjectRow key={p.id} project={p} />)}
+              </ul>
+            </div>
+          )}
+        </>
+      );
     }
   }
 
