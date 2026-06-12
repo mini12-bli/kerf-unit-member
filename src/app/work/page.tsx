@@ -52,7 +52,7 @@ function StatusChip({ status, date, completedDate }: { status: Status; date?: st
   if (status === "진행중") {
     const label = formatMMDD(date) ?? "진행중";
     return (
-      <span className={`text-xs px-2 py-0.5 rounded-full font-medium shrink-0 ${meta.badgeClass}`}>
+      <span className={`text-xs px-2 py-0.5 rounded-sm font-medium shrink-0 ${meta.badgeClass}`}>
         {label}
       </span>
     );
@@ -61,14 +61,14 @@ function StatusChip({ status, date, completedDate }: { status: Status; date?: st
   if (status === "완료") {
     const label = completedDate ? `완료 ${formatMMDD(completedDate)}` : "완료";
     return (
-      <span className={`text-xs px-2 py-0.5 rounded-full font-medium shrink-0 ${meta.badgeClass}`}>
+      <span className={`text-xs px-2 py-0.5 rounded-sm font-medium shrink-0 ${meta.badgeClass}`}>
         {label}
       </span>
     );
   }
 
   return (
-    <span className={`text-xs px-2 py-0.5 rounded-full font-medium shrink-0 ${meta.badgeClass}`}>
+    <span className={`text-xs px-2 py-0.5 rounded-sm font-medium shrink-0 ${meta.badgeClass}`}>
       {meta.label}
     </span>
   );
