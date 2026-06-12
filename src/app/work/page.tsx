@@ -51,8 +51,10 @@ function StatusChip({ status, date, completedDate }: { status: Status; date?: st
 
   if (status === "진행중") {
     const label = formatMMDD(date) ?? "진행중";
+    const isFuture = date && date.replace(/-00$/, "-01") > new Date().toISOString().slice(0, 10);
+    const badgeClass = isFuture ? "bg-emerald-100 text-emerald-700" : meta.badgeClass;
     return (
-      <span className={`text-xs px-2 py-0.5 rounded-sm font-medium shrink-0 ${meta.badgeClass}`}>
+      <span className={`text-xs px-2 py-0.5 rounded-sm font-medium shrink-0 ${badgeClass}`}>
         {label}
       </span>
     );
