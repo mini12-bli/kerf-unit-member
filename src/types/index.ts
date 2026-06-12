@@ -7,7 +7,7 @@ export interface Task {
 export interface Project {
   id: string;
   name: string;
-  status: "검토중" | "진행중" | "완료";
+  status: "검토중" | "진행중" | "완료" | "DROP";
   year?: number;
   team?: string;
   squad?: string;

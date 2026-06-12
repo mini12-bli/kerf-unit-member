@@ -3,13 +3,15 @@ import { Project } from "@/types";
 const statusStyle: Record<Project["status"], string> = {
   진행중: "bg-blue-100 text-blue-700",
   완료: "bg-green-100 text-green-700",
-  검토중: "bg-gray-100 text-gray-500",
+  검토중: "bg-amber-100 text-amber-700",
+  DROP: "bg-gray-100 text-gray-400",
 };
 
 const statusDot: Record<Project["status"], string> = {
   진행중: "bg-blue-500",
   완료: "bg-green-500",
-  검토중: "bg-gray-400",
+  검토중: "bg-amber-400",
+  DROP: "bg-gray-300",
 };
 
 export default function ProjectList({ projects }: { projects: Project[] }) {

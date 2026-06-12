@@ -26,9 +26,10 @@ const squadColor: Record<string, string> = {
 type Status = Project["status"];
 
 const STATUS_META: Record<Status, { label: string; dotClass: string; badgeClass: string }> = {
-  검토중: { label: "검토중", dotClass: "bg-gray-400", badgeClass: "bg-gray-100 text-gray-500" },
+  검토중: { label: "REVIEW", dotClass: "bg-amber-400", badgeClass: "bg-amber-100 text-amber-700" },
   진행중: { label: "진행중", dotClass: "bg-blue-500", badgeClass: "bg-blue-100 text-blue-700" },
   완료: { label: "완료", dotClass: "bg-green-500", badgeClass: "bg-green-100 text-green-700" },
+  DROP: { label: "DROP", dotClass: "bg-gray-300", badgeClass: "bg-gray-100 text-gray-400" },
 };
 
 const SQUADS = ["전체", "커머스전시", "프로모션전시", "검색", "웰니스", "W케어", "발견", "주문결제", "포스트오더"] as const;
@@ -38,14 +39,36 @@ const SQUAD_OPTIONS = SQUADS.filter((s) => s !== "전체");
 const FILTER_OPTIONS = ["전체", "진행중", "검토중", "최신순"] as const;
 type FilterOption = typeof FILTER_OPTIONS[number];
 
-function StatusChip({ status, completedDate }: { status: Status; completedDate?: string }) {
+function formatMMDD(dateStr?: string) {
+  if (!dateStr) return null;
+  const [, m, d] = dateStr.split("-");
+  return `${parseInt(m)}.${parseInt(d)}`;
+}
+
+function StatusChip({ status, date, completedDate }: { status: Status; date?: string; completedDate?: string }) {
   const meta = STATUS_META[status];
-  const dateLabel = completedDate
-    ? (() => { const [, m, d] = completedDate.split("-"); return ` ${parseInt(m)}.${parseInt(d)}`; })()
-    : "";
+
+  if (status === "진행중") {
+    const label = formatMMDD(date) ?? "진행중";
+    return (
+      <span className={`text-xs px-2 py-0.5 rounded-full font-medium shrink-0 ${meta.badgeClass}`}>
+        {label}
+      </span>
+    );
+  }
+
+  if (status === "완료") {
+    const label = completedDate ? `완료 ${formatMMDD(completedDate)}` : "완료";
+    return (
+      <span className={`text-xs px-2 py-0.5 rounded-full font-medium shrink-0 ${meta.badgeClass}`}>
+        {label}
+      </span>
+    );
+  }
+
   return (
     <span className={`text-xs px-2 py-0.5 rounded-full font-medium shrink-0 ${meta.badgeClass}`}>
-      {meta.label}{dateLabel}
+      {meta.label}
     </span>
   );
 }
@@ -65,7 +88,7 @@ function ProjectRow({ project }: { project: Project }) {
           </span>
         )}
       </div>
-      <StatusChip status={project.status} completedDate={project.completedDate} />
+      <StatusChip status={project.status} date={project.date} completedDate={project.completedDate} />
     </li>
   );
 }
@@ -197,17 +220,20 @@ function AddProjectModal({ year, onClose, onAdd }: {
             <div>
               <label className="text-xs font-medium text-gray-500 mb-1.5 block">상태</label>
               <div className="flex gap-2">
-                {(["진행중", "검토중", "완료"] as Status[]).map((s) => (
+                {(["진행중", "검토중", "완료", "DROP"] as Status[]).map((s) => (
                   <button
                     key={s}
                     onClick={() => setForm((f) => ({ ...f, status: s }))}
                     className={`flex-1 py-2 rounded-xl text-sm font-medium transition-all ${
                       form.status === s
-                        ? s === "진행중" ? "bg-blue-100 text-blue-700" : s === "검토중" ? "bg-gray-100 text-gray-600" : "bg-green-100 text-green-700"
+                        ? s === "진행중" ? "bg-blue-100 text-blue-700"
+                        : s === "검토중" ? "bg-amber-100 text-amber-700"
+                        : s === "완료" ? "bg-green-100 text-green-700"
+                        : "bg-gray-100 text-gray-500"
                         : "bg-gray-50 text-gray-400"
                     }`}
                   >
-                    {s}
+                    {s === "검토중" ? "REVIEW" : s}
                   </button>
                 ))}
               </div>
@@ -276,7 +302,7 @@ export default function WorkPage() {
         const sb = b.squad ?? "기타";
         const squadDiff = (squadOrder[sa] ?? 99) - (squadOrder[sb] ?? 99);
         if (squadDiff !== 0) return squadDiff;
-        const statusOrd: Record<Status, number> = { 진행중: 0, 검토중: 1, 완료: 2 };
+        const statusOrd: Record<Status, number> = { 진행중: 0, 검토중: 1, 완료: 2, DROP: 3 };
         return statusOrd[a.status] - statusOrd[b.status];
       });
       return <FlatList projects={applySort(base)} />;
