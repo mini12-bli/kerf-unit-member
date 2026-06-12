@@ -39,18 +39,13 @@ const FILTER_OPTIONS = ["전체", "진행중", "검토중", "최신순"] as cons
 type FilterOption = typeof FILTER_OPTIONS[number];
 
 function StatusChip({ status, completedDate }: { status: Status; completedDate?: string }) {
-  if (status === "완료" && completedDate) {
-    const [, m, d] = completedDate.split("-");
-    return (
-      <span className="text-xs px-2 py-0.5 rounded-full font-medium shrink-0 bg-green-100 text-green-700">
-        {`${parseInt(m)}.${parseInt(d)}`}
-      </span>
-    );
-  }
   const meta = STATUS_META[status];
+  const dateLabel = completedDate
+    ? (() => { const [, m, d] = completedDate.split("-"); return ` ${parseInt(m)}.${parseInt(d)}`; })()
+    : "";
   return (
     <span className={`text-xs px-2 py-0.5 rounded-full font-medium shrink-0 ${meta.badgeClass}`}>
-      {meta.label}
+      {meta.label}{dateLabel}
     </span>
   );
 }
