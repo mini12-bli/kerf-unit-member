@@ -288,6 +288,9 @@ export default function WorkPage() {
     });
 
   function applySort(items: Project[]): Project[] {
+    if (selectedYear === 2026) {
+      return [...items].sort((a, b) => (b.date ?? "").localeCompare(a.date ?? ""));
+    }
     return [...items].sort((a, b) => (a.date ?? "").localeCompare(b.date ?? ""));
   }
 
