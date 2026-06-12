@@ -317,7 +317,18 @@ export default function WorkPage() {
     if (viewMode === "스쿼드별") {
       return (
         <>
-          <FlatList projects={applySort(active)} />
+          {active.length > 0 && (
+            <div className="mb-1">
+              <div className="flex items-center gap-2 mb-1">
+                <span className="w-2.5 h-2.5 rounded-full shrink-0 bg-blue-500" />
+                <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wide">진행중</h3>
+                <span className="text-xs text-gray-400">{active.length}</span>
+              </div>
+              <ul className="bg-white rounded-2xl shadow-sm px-4">
+                {applySort(active).map((p) => <ProjectRow key={p.id} project={p} />)}
+              </ul>
+            </div>
+          )}
           {past.length > 0 && (
             <div className="mt-8">
               <div className="flex items-center gap-2 mb-1">
