@@ -288,8 +288,7 @@ export default function WorkPage() {
     });
 
   function applySort(items: Project[]): Project[] {
-    if (filterOption === "최신순") return [...items].sort((a, b) => (b.date ?? "").localeCompare(a.date ?? ""));
-    return items;
+    return [...items].sort((a, b) => (a.date ?? "").localeCompare(b.date ?? ""));
   }
 
   function renderContent() {
