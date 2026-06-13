@@ -6,8 +6,8 @@ import { Project } from "@/types";
 
 const unitWork = unitWorkData as Project[];
 const YEARS = [2026, 2025];
-type ViewMode = "스쿼드별" | "진행상황별";
-const VIEW_MODES: ViewMode[] = ["스쿼드별", "진행상황별"];
+type ViewMode = "Team" | "Status";
+const VIEW_MODES: ViewMode[] = ["Status", "Team"];
 
 const squadOrder: Record<string, number> = {
   커머스전시: 0, 프로모션전시: 1, 검색: 2, 웰니스: 3, "W케어": 4, 발견: 5, 주문결제: 6, 포스트오더: 7, 공통: 8,
@@ -275,7 +275,7 @@ function AddProjectModal({ year, onClose, onAdd }: {
 export default function WorkPage() {
   const router = useRouter();
   const [selectedYear, setSelectedYear] = useState(2026);
-  const [viewMode, setViewMode] = useState<ViewMode>("스쿼드별");
+  const [viewMode, setViewMode] = useState<ViewMode>("Status");
   const [squadFilter, setSquadFilter] = useState<SquadFilter>("전체");
   const [filterOption, setFilterOption] = useState<FilterOption>("전체");
   const [addedProjects, setAddedProjects] = useState<Project[]>([]);
@@ -316,7 +316,7 @@ export default function WorkPage() {
     const past = filtered.filter((p) => isPast(p) || p.status === "완료");
     const dropped = filtered.filter((p) => p.status === "DROP");
 
-    if (viewMode === "스쿼드별") {
+    if (viewMode === "Team") {
       return (
         <>
           {active.length > 0 && (
@@ -359,7 +359,7 @@ export default function WorkPage() {
       );
     }
 
-    if (viewMode === "진행상황별") {
+    if (viewMode === "Status") {
       return (
         <>
           {active.length > 0 && (
