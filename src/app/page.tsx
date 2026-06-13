@@ -120,6 +120,23 @@ export default function HomePage() {
                     <span className="text-sm text-gray-700 font-medium">업무</span>
                   </div>
                 </div>
+
+                {/* 간식 폴더 */}
+                <div className="cursor-pointer group">
+                  <div className="relative w-full aspect-[4/3]">
+                    <div className="absolute top-0 left-0 w-2/5 h-[14%] rounded-t-lg bg-slate-700" style={{ zIndex: 1 }} />
+                    <div className="absolute bottom-0 left-0 right-0 top-[10%] rounded-xl shadow-md group-hover:shadow-xl group-hover:-translate-y-1 transition-all bg-gradient-to-br from-slate-800 to-slate-600" style={{ zIndex: 1 }}>
+                      <div className="absolute inset-x-3 top-2 h-1/3 rounded-lg bg-white/20" />
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <span className="text-2xl drop-shadow z-10">🍩</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="mt-2 flex items-center gap-1.5">
+                    <span className="w-2 h-2 rounded-full bg-slate-800" />
+                    <span className="text-sm text-gray-700 font-medium">간식</span>
+                  </div>
+                </div>
               </div>
             </div>
           );
