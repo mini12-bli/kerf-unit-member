@@ -321,36 +321,36 @@ export default function WorkPage() {
         <>
           {active.length > 0 && (
             <div className="mb-1">
-              <div className="flex items-center gap-2 mb-1 px-4">
+              <div className="flex items-center gap-2 mb-1">
                 <span className="w-2.5 h-2.5 rounded-full shrink-0 bg-blue-500" />
                 <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wide">진행중</h3>
                 <span className="text-xs text-gray-400">{active.length}</span>
               </div>
-              <ul className="bg-white shadow-sm px-4">
+              <ul className="bg-white rounded-2xl shadow-sm px-4">
                 {applySort(active).map((p) => <ProjectRow key={p.id} project={p} />)}
               </ul>
             </div>
           )}
           {past.length > 0 && (
             <div className="mt-8">
-              <div className="flex items-center gap-2 mb-1 px-4">
+              <div className="flex items-center gap-2 mb-1">
                 <span className="w-2.5 h-2.5 rounded-full shrink-0 bg-green-500" />
                 <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wide">완료</h3>
                 <span className="text-xs text-gray-400">{past.length}</span>
               </div>
-              <ul className="bg-white shadow-sm px-4">
+              <ul className="bg-white rounded-2xl shadow-sm px-4">
                 {applySort(past).map((p) => <ProjectRow key={p.id} project={p} />)}
               </ul>
             </div>
           )}
           {dropped.length > 0 && (
             <div className="mt-8">
-              <div className="flex items-center gap-2 mb-1 px-4">
+              <div className="flex items-center gap-2 mb-1">
                 <span className="w-2.5 h-2.5 rounded-full shrink-0 bg-gray-300" />
                 <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wide">DROP</h3>
                 <span className="text-xs text-gray-400">{dropped.length}</span>
               </div>
-              <ul className="bg-white shadow-sm px-4">
+              <ul className="bg-white rounded-2xl shadow-sm px-4">
                 {applySort(dropped).map((p) => <ProjectRow key={p.id} project={p} />)}
               </ul>
             </div>
@@ -364,36 +364,36 @@ export default function WorkPage() {
         <>
           {active.length > 0 && (
             <div className="mb-8">
-              <div className="flex items-center gap-2 mb-1 px-4">
+              <div className="flex items-center gap-2 mb-1">
                 <span className="w-2.5 h-2.5 rounded-full shrink-0 bg-blue-500" />
                 <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wide">진행중</h3>
                 <span className="text-xs text-gray-400">{active.length}</span>
               </div>
-              <ul className="bg-white shadow-sm px-4">
+              <ul className="bg-white rounded-2xl shadow-sm px-4">
                 {applySort(active).map((p) => <ProjectRow key={p.id} project={p} />)}
               </ul>
             </div>
           )}
           {past.length > 0 && (
             <div className="mb-8">
-              <div className="flex items-center gap-2 mb-1 px-4">
+              <div className="flex items-center gap-2 mb-1">
                 <span className="w-2.5 h-2.5 rounded-full shrink-0 bg-green-500" />
                 <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wide">완료</h3>
                 <span className="text-xs text-gray-400">{past.length}</span>
               </div>
-              <ul className="bg-white shadow-sm px-4">
+              <ul className="bg-white rounded-2xl shadow-sm px-4">
                 {applySort(past).map((p) => <ProjectRow key={p.id} project={p} />)}
               </ul>
             </div>
           )}
           {dropped.length > 0 && (
             <div className="mb-8">
-              <div className="flex items-center gap-2 mb-1 px-4">
+              <div className="flex items-center gap-2 mb-1">
                 <span className="w-2.5 h-2.5 rounded-full shrink-0 bg-gray-300" />
                 <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wide">DROP</h3>
                 <span className="text-xs text-gray-400">{dropped.length}</span>
               </div>
-              <ul className="bg-white shadow-sm px-4">
+              <ul className="bg-white rounded-2xl shadow-sm px-4">
                 {applySort(dropped).map((p) => <ProjectRow key={p.id} project={p} />)}
               </ul>
             </div>
@@ -428,10 +428,10 @@ export default function WorkPage() {
         </div>
       </header>
 
-      <div className="max-w-6xl mx-auto pt-5 pb-24">
+      <div className="max-w-6xl mx-auto px-6 pt-5 pb-24">
         {/* 뷰 모드 탭 */}
         {selectedYear !== 2025 && (
-          <div className="flex items-center gap-5 mb-4 border-b border-gray-200 px-4">
+          <div className="flex items-center gap-5 mb-4 border-b border-gray-200">
             {VIEW_MODES.map((mode) => (
               <button
                 key={mode}
@@ -449,7 +449,7 @@ export default function WorkPage() {
         )}
 
         {/* 필터 드롭다운 */}
-        <div className="flex justify-end gap-2 mb-4 px-4">
+        <div className="flex justify-end gap-2 mb-4">
           <select
             value={squadFilter}
             onChange={(e) => setSquadFilter(e.target.value as SquadFilter)}
