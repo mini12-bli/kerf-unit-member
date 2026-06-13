@@ -332,25 +332,13 @@ export default function WorkPage() {
             if (teamProjects.length === 0) return null;
             return (
               <div key={teamName} className="mb-8">
-                <div className="flex items-center gap-2 mb-3">
+                <div className="flex items-center gap-2 mb-2">
                   <h2 className="text-xs font-bold text-gray-700 uppercase tracking-wide">{teamName}</h2>
                   <span className="text-xs text-gray-400">{teamProjects.length}</span>
                 </div>
-                {squads.map((squadName) => {
-                  const squadProjects = filtered.filter((p) => p.squad === squadName);
-                  if (squadProjects.length === 0) return null;
-                  return (
-                    <div key={squadName} className="mb-3">
-                      <div className="flex items-center gap-1.5 mb-1 pl-2">
-                        <span className="text-xs text-gray-400 font-medium">{squadName}</span>
-                        <span className="text-xs text-gray-300">{squadProjects.length}</span>
-                      </div>
-                      <ul className="bg-white rounded-2xl shadow-sm px-2 -mx-4">
-                        {applySort(squadProjects).map((p) => <ProjectRow key={p.id} project={p} />)}
-                      </ul>
-                    </div>
-                  );
-                })}
+                <ul className="bg-white rounded-2xl shadow-sm px-2 -mx-4">
+                  {applySort(teamProjects).map((p) => <ProjectRow key={p.id} project={p} />)}
+                </ul>
               </div>
             );
           })}
