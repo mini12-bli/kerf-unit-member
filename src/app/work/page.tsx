@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import unitWorkData from "@/data/unitWork.json";
 import { Project } from "@/types";
@@ -87,13 +87,17 @@ function StatusChip({ status, date, completedDate }: { status: Status; date?: st
   );
 }
 
+function displaySquad(squad: string): string {
+  return squad === "전체" ? "공통" : squad;
+}
+
 function ProjectRow({ project }: { project: Project }) {
   const squad = project.squad;
   return (
     <li className="flex items-center justify-between gap-3 py-3 border-b border-gray-100 last:border-0">
       <div className="flex items-center gap-0 min-w-0">
         {squad && (
-          <span className="text-sm text-gray-400 shrink-0">[{squad}]&nbsp;</span>
+          <span className="text-sm text-gray-400 shrink-0">[{displaySquad(squad)}]&nbsp;</span>
         )}
         <span className="text-sm text-gray-700 truncate">{project.name}</span>
         {project.milestone && (
@@ -291,6 +295,10 @@ export default function WorkPage() {
 
   const allProjects = [...unitWork, ...addedProjects];
 
+  const shuffledTeams = useMemo(() => {
+    return [...TEAM_CONFIG].sort(() => Math.random() - 0.5);
+  }, [viewMode]);
+
   const filtered = allProjects
     .filter((p) => p.year === selectedYear)
     .filter((p) => squadFilter === "전체" || p.squad === squadFilter)
@@ -327,7 +335,7 @@ export default function WorkPage() {
     if (viewMode === "Team") {
       return (
         <>
-          {TEAM_CONFIG.map(({ name: teamName, squads }) => {
+          {shuffledTeams.map(({ name: teamName, squads }) => {
             const teamProjects = filtered.filter((p) => squads.includes(p.squad ?? ""));
             if (teamProjects.length === 0) return null;
             return (
