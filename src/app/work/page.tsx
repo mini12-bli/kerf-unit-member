@@ -430,21 +430,23 @@ export default function WorkPage() {
 
       <div className="max-w-6xl mx-auto pt-5 pb-24">
         {/* 뷰 모드 탭 */}
-        <div className="flex items-center gap-5 mb-4 border-b border-gray-200 px-4">
-          {VIEW_MODES.map((mode) => (
-            <button
-              key={mode}
-              onClick={() => setViewMode(mode)}
-              className="pb-2.5 text-sm font-medium transition-colors border-b-2 -mb-px"
-              style={{
-                color: viewMode === mode ? "#1e293b" : "#9ca3af",
-                borderBottomColor: viewMode === mode ? "#1e293b" : "transparent",
-              }}
-            >
-              {mode}
-            </button>
-          ))}
-        </div>
+        {selectedYear !== 2025 && (
+          <div className="flex items-center gap-5 mb-4 border-b border-gray-200 px-4">
+            {VIEW_MODES.map((mode) => (
+              <button
+                key={mode}
+                onClick={() => setViewMode(mode)}
+                className="pb-2.5 text-sm font-medium transition-colors border-b-2 -mb-px"
+                style={{
+                  color: viewMode === mode ? "#1e293b" : "#9ca3af",
+                  borderBottomColor: viewMode === mode ? "#1e293b" : "transparent",
+                }}
+              >
+                {mode}
+              </button>
+            ))}
+          </div>
+        )}
 
         {/* 필터 드롭다운 */}
         <div className="flex justify-end gap-2 mb-4 px-4">
