@@ -428,7 +428,7 @@ export default function WorkPage() {
         </div>
       </header>
 
-      <div className="max-w-6xl mx-auto px-6 pt-5 pb-24">
+      <div className="max-w-6xl mx-auto px-2 pt-5 pb-24">
         {/* 뷰 모드 탭 */}
         {selectedYear !== 2025 && (
           <div className="flex items-center gap-5 mb-4 border-b border-gray-200">
