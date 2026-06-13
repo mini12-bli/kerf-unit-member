@@ -326,7 +326,7 @@ export default function WorkPage() {
                 <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wide">진행중</h3>
                 <span className="text-xs text-gray-400">{active.length}</span>
               </div>
-              <ul className="bg-white rounded-2xl shadow-sm px-4">
+              <ul className="bg-white rounded-2xl shadow-sm px-4 -mx-4">
                 {applySort(active).map((p) => <ProjectRow key={p.id} project={p} />)}
               </ul>
             </div>
@@ -338,7 +338,7 @@ export default function WorkPage() {
                 <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wide">완료</h3>
                 <span className="text-xs text-gray-400">{past.length}</span>
               </div>
-              <ul className="bg-white rounded-2xl shadow-sm px-4">
+              <ul className="bg-white rounded-2xl shadow-sm px-4 -mx-4">
                 {applySort(past).map((p) => <ProjectRow key={p.id} project={p} />)}
               </ul>
             </div>
@@ -350,7 +350,7 @@ export default function WorkPage() {
                 <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wide">DROP</h3>
                 <span className="text-xs text-gray-400">{dropped.length}</span>
               </div>
-              <ul className="bg-white rounded-2xl shadow-sm px-4">
+              <ul className="bg-white rounded-2xl shadow-sm px-4 -mx-4">
                 {applySort(dropped).map((p) => <ProjectRow key={p.id} project={p} />)}
               </ul>
             </div>
@@ -369,7 +369,7 @@ export default function WorkPage() {
                 <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wide">진행중</h3>
                 <span className="text-xs text-gray-400">{active.length}</span>
               </div>
-              <ul className="bg-white rounded-2xl shadow-sm px-4">
+              <ul className="bg-white rounded-2xl shadow-sm px-4 -mx-4">
                 {applySort(active).map((p) => <ProjectRow key={p.id} project={p} />)}
               </ul>
             </div>
@@ -381,7 +381,7 @@ export default function WorkPage() {
                 <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wide">완료</h3>
                 <span className="text-xs text-gray-400">{past.length}</span>
               </div>
-              <ul className="bg-white rounded-2xl shadow-sm px-4">
+              <ul className="bg-white rounded-2xl shadow-sm px-4 -mx-4">
                 {applySort(past).map((p) => <ProjectRow key={p.id} project={p} />)}
               </ul>
             </div>
@@ -393,7 +393,7 @@ export default function WorkPage() {
                 <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wide">DROP</h3>
                 <span className="text-xs text-gray-400">{dropped.length}</span>
               </div>
-              <ul className="bg-white rounded-2xl shadow-sm px-4">
+              <ul className="bg-white rounded-2xl shadow-sm px-4 -mx-4">
                 {applySort(dropped).map((p) => <ProjectRow key={p.id} project={p} />)}
               </ul>
             </div>
@@ -428,7 +428,7 @@ export default function WorkPage() {
         </div>
       </header>
 
-      <div className="max-w-6xl mx-auto px-2 pt-5 pb-24">
+      <div className="max-w-6xl mx-auto px-6 pt-5 pb-24">
         {/* 뷰 모드 탭 */}
         {selectedYear !== 2025 && (
           <div className="flex items-center gap-5 mb-4 border-b border-gray-200">
