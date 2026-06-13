@@ -341,7 +341,7 @@ export default function WorkPage() {
             return (
               <div key={teamName} className="mb-8">
                 <div className="flex items-center gap-2 mb-2">
-                  <h2 className="text-[15px] font-bold text-gray-700 uppercase tracking-wide">{teamName}</h2>
+                  <h2 className="text-sm font-bold text-gray-700 uppercase tracking-wide">{teamName}</h2>
                   <span className="text-xs text-gray-400">{teamProjects.length}</span>
                 </div>
                 <ul className="bg-white rounded-2xl shadow-sm px-2 -mx-4">
