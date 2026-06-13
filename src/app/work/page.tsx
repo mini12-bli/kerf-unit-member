@@ -361,7 +361,7 @@ export default function WorkPage() {
             <div className="mb-8">
               <div className="flex items-center gap-2 mb-1">
                 <span className="w-2.5 h-2.5 rounded-full shrink-0 bg-blue-500" />
-                <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wide">진행중</h3>
+                <h3 className="text-sm font-bold text-gray-700 uppercase tracking-wide">진행중</h3>
                 <span className="text-xs text-gray-400">{active.length}</span>
               </div>
               <ul className="bg-white rounded-2xl shadow-sm px-2 -mx-4">
@@ -373,7 +373,7 @@ export default function WorkPage() {
             <div className="mb-8">
               <div className="flex items-center gap-2 mb-1">
                 <span className="w-2.5 h-2.5 rounded-full shrink-0 bg-green-500" />
-                <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wide">완료</h3>
+                <h3 className="text-sm font-bold text-gray-700 uppercase tracking-wide">완료</h3>
                 <span className="text-xs text-gray-400">{past.length}</span>
               </div>
               <ul className="bg-white rounded-2xl shadow-sm px-2 -mx-4">
@@ -385,7 +385,7 @@ export default function WorkPage() {
             <div className="mb-8">
               <div className="flex items-center gap-2 mb-1">
                 <span className="w-2.5 h-2.5 rounded-full shrink-0 bg-gray-300" />
-                <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wide">DROP</h3>
+                <h3 className="text-sm font-bold text-gray-700 uppercase tracking-wide">DROP</h3>
                 <span className="text-xs text-gray-400">{dropped.length}</span>
               </div>
               <ul className="bg-white rounded-2xl shadow-sm px-2 -mx-4">
