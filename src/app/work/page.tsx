@@ -12,6 +12,14 @@ const VIEW_MODES: ViewMode[] = ["Status", "Team"];
 const squadOrder: Record<string, number> = {
   커머스전시: 0, 프로모션전시: 1, 검색: 2, 웰니스: 3, "W케어": 4, 발견: 5, 주문결제: 6, 포스트오더: 7, 공통: 8,
 };
+
+const TEAM_CONFIG: { name: string; squads: string[] }[] = [
+  { name: "공통", squads: ["공통", "전체"] },
+  { name: "트랜잭션프로덕트팀", squads: ["주문결제", "포스트오더"] },
+  { name: "버티컬서비스프로덕트팀", squads: ["웰니스", "발견", "W케어"] },
+  { name: "서치프로덕트팀", squads: ["검색"] },
+  { name: "디스커버리프로덕트팀", squads: ["커머스전시", "프로모션전시"] },
+];
 const squadColor: Record<string, string> = {
   커머스전시: "#6366f1",
   프로모션전시: "#8b5cf6",
@@ -319,42 +327,33 @@ export default function WorkPage() {
     if (viewMode === "Team") {
       return (
         <>
-          {active.length > 0 && (
-            <div className="mb-1">
-              <div className="flex items-center gap-2 mb-1">
-                <span className="w-2.5 h-2.5 rounded-full shrink-0 bg-blue-500" />
-                <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wide">진행중</h3>
-                <span className="text-xs text-gray-400">{active.length}</span>
+          {TEAM_CONFIG.map(({ name: teamName, squads }) => {
+            const teamProjects = filtered.filter((p) => squads.includes(p.squad ?? ""));
+            if (teamProjects.length === 0) return null;
+            return (
+              <div key={teamName} className="mb-8">
+                <div className="flex items-center gap-2 mb-3">
+                  <h2 className="text-xs font-bold text-gray-700 uppercase tracking-wide">{teamName}</h2>
+                  <span className="text-xs text-gray-400">{teamProjects.length}</span>
+                </div>
+                {squads.map((squadName) => {
+                  const squadProjects = filtered.filter((p) => p.squad === squadName);
+                  if (squadProjects.length === 0) return null;
+                  return (
+                    <div key={squadName} className="mb-3">
+                      <div className="flex items-center gap-1.5 mb-1 pl-2">
+                        <span className="text-xs text-gray-400 font-medium">{squadName}</span>
+                        <span className="text-xs text-gray-300">{squadProjects.length}</span>
+                      </div>
+                      <ul className="bg-white rounded-2xl shadow-sm px-2 -mx-4">
+                        {applySort(squadProjects).map((p) => <ProjectRow key={p.id} project={p} />)}
+                      </ul>
+                    </div>
+                  );
+                })}
               </div>
-              <ul className="bg-white rounded-2xl shadow-sm px-2 -mx-4">
-                {applySort(active).map((p) => <ProjectRow key={p.id} project={p} />)}
-              </ul>
-            </div>
-          )}
-          {past.length > 0 && (
-            <div className="mt-8">
-              <div className="flex items-center gap-2 mb-1">
-                <span className="w-2.5 h-2.5 rounded-full shrink-0 bg-green-500" />
-                <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wide">완료</h3>
-                <span className="text-xs text-gray-400">{past.length}</span>
-              </div>
-              <ul className="bg-white rounded-2xl shadow-sm px-2 -mx-4">
-                {applySort(past).map((p) => <ProjectRow key={p.id} project={p} />)}
-              </ul>
-            </div>
-          )}
-          {dropped.length > 0 && (
-            <div className="mt-8">
-              <div className="flex items-center gap-2 mb-1">
-                <span className="w-2.5 h-2.5 rounded-full shrink-0 bg-gray-300" />
-                <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wide">DROP</h3>
-                <span className="text-xs text-gray-400">{dropped.length}</span>
-              </div>
-              <ul className="bg-white rounded-2xl shadow-sm px-2 -mx-4">
-                {applySort(dropped).map((p) => <ProjectRow key={p.id} project={p} />)}
-              </ul>
-            </div>
-          )}
+            );
+          })}
         </>
       );
     }
