@@ -316,11 +316,11 @@ export default function WorkPage() {
     return !!d && d <= today;
   }
 
-  function applySort(items: Project[]): Project[] {
-    if (selectedYear === 2026) {
-      return [...items].sort((a, b) => (b.date ?? "").localeCompare(a.date ?? ""));
+  function applySort(items: Project[], forceAsc?: boolean): Project[] {
+    if (forceAsc || selectedYear !== 2026) {
+      return [...items].sort((a, b) => (a.date ?? "").localeCompare(b.date ?? ""));
     }
-    return [...items].sort((a, b) => (a.date ?? "").localeCompare(b.date ?? ""));
+    return [...items].sort((a, b) => (b.date ?? "").localeCompare(a.date ?? ""));
   }
 
   function renderContent() {
@@ -345,7 +345,7 @@ export default function WorkPage() {
                   <span className="text-xs text-gray-400">{teamProjects.length}</span>
                 </div>
                 <ul className="bg-white rounded-2xl shadow-sm px-2 -mx-4">
-                  {applySort(teamProjects).map((p) => <ProjectRow key={p.id} project={p} />)}
+                  {applySort(teamProjects, true).map((p) => <ProjectRow key={p.id} project={p} />)}
                 </ul>
               </div>
             );
@@ -365,7 +365,7 @@ export default function WorkPage() {
                 <span className="text-xs text-gray-400">{active.length}</span>
               </div>
               <ul className="bg-white rounded-2xl shadow-sm px-2 -mx-4">
-                {applySort(active).map((p) => <ProjectRow key={p.id} project={p} />)}
+                {applySort(active, true).map((p) => <ProjectRow key={p.id} project={p} />)}
               </ul>
             </div>
           )}
