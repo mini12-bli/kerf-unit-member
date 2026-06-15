@@ -461,13 +461,12 @@ export default function WorkPage() {
         {showSearch && (
           <div className="mb-4">
             <input
-              autoFocus
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="과제명 또는 스쿼드 검색"
-              className="w-full text-sm border border-gray-200 rounded-xl px-4 py-2.5 bg-white text-gray-700 placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-slate-300"
-              style={{ fontSize: 16 }}
+              className="w-full border border-gray-200 rounded-xl px-4 py-2.5 bg-white text-gray-700 placeholder-gray-300 focus:outline-none"
+              style={{ fontSize: 14 }}
             />
           </div>
         )}
