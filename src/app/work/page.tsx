@@ -292,6 +292,8 @@ export default function WorkPage() {
   const [filterOption, setFilterOption] = useState<FilterOption>("전체");
   const [addedProjects, setAddedProjects] = useState<Project[]>([]);
   const [showAddModal, setShowAddModal] = useState(false);
+  const [showSearch, setShowSearch] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
 
   const allProjects = [...unitWork, ...addedProjects];
 
@@ -426,20 +428,47 @@ export default function WorkPage() {
       <div className="max-w-6xl mx-auto px-6 pt-5 pb-24">
         {/* 뷰 모드 탭 */}
         {selectedYear !== 2025 && (
-          <div className="flex items-center gap-5 mb-4 border-b border-gray-200">
-            {VIEW_MODES.map((mode) => (
-              <button
-                key={mode}
-                onClick={() => setViewMode(mode)}
-                className="pb-2.5 text-sm font-medium transition-colors border-b-2 -mb-px"
-                style={{
-                  color: viewMode === mode ? "#1e293b" : "#9ca3af",
-                  borderBottomColor: viewMode === mode ? "#1e293b" : "transparent",
-                }}
-              >
-                {mode}
-              </button>
-            ))}
+          <div className="flex items-center justify-between mb-4 border-b border-gray-200">
+            <div className="flex items-center gap-5">
+              {VIEW_MODES.map((mode) => (
+                <button
+                  key={mode}
+                  onClick={() => setViewMode(mode)}
+                  className="pb-2.5 text-sm font-medium transition-colors border-b-2 -mb-px"
+                  style={{
+                    color: viewMode === mode ? "#1e293b" : "#9ca3af",
+                    borderBottomColor: viewMode === mode ? "#1e293b" : "transparent",
+                  }}
+                >
+                  {mode}
+                </button>
+              ))}
+            </div>
+            <button
+              onClick={() => { setShowSearch((v) => !v); setSearchQuery(""); }}
+              className="pb-2.5 -mb-px transition-colors"
+              style={{ color: showSearch ? "#1e293b" : "#9ca3af" }}
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="11" cy="11" r="8" />
+                <line x1="21" y1="21" x2="16.65" y2="16.65" />
+              </svg>
+            </button>
+          </div>
+        )}
+
+        {/* 검색창 */}
+        {showSearch && (
+          <div className="mb-4">
+            <input
+              autoFocus
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="과제명 또는 스쿼드 검색"
+              className="w-full text-sm border border-gray-200 rounded-xl px-4 py-2.5 bg-white text-gray-700 placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-slate-300"
+              style={{ fontSize: 16 }}
+            />
           </div>
         )}
 
@@ -465,7 +494,24 @@ export default function WorkPage() {
           </select>
         </div>
 
-        {renderContent()}
+        {showSearch && searchQuery.trim() ? (
+          (() => {
+            const q = searchQuery.trim().toLowerCase();
+            const results = allProjects.filter(
+              (p) =>
+                p.name.toLowerCase().includes(q) ||
+                (p.squad ?? "").toLowerCase().includes(q)
+            );
+            if (results.length === 0) {
+              return <p className="text-sm text-gray-400 text-center py-12">검색 결과가 없습니다.</p>;
+            }
+            return (
+              <ul className="bg-white rounded-2xl shadow-sm px-2 -mx-4">
+                {results.map((p) => <ProjectRow key={p.id} project={p} />)}
+              </ul>
+            );
+          })()
+        ) : renderContent()}
       </div>
 
       {/* 플로팅 등록 버튼 */}
