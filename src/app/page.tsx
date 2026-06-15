@@ -122,7 +122,7 @@ export default function HomePage() {
                 </div>
 
                 {/* 간식 폴더 */}
-                <div className="cursor-pointer group">
+                <div className="cursor-pointer group" onClick={() => router.push("/snack")}>
                   <div className="relative w-full aspect-[4/3]">
                     <div className="absolute top-0 left-0 w-2/5 h-[14%] rounded-t-lg bg-slate-700" style={{ zIndex: 1 }} />
                     <div className="absolute bottom-0 left-0 right-0 top-[10%] rounded-xl shadow-md group-hover:shadow-xl group-hover:-translate-y-1 transition-all bg-gradient-to-br from-slate-800 to-slate-600" style={{ zIndex: 1 }}>
