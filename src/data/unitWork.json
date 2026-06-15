@@ -606,5 +606,13 @@
     "year": 2026,
     "squad": "주문결제",
     "date": "2027-00-00"
+  },
+  {
+    "id": "proj_085",
+    "name": "ChatGPT Apps 등록 (CBE)",
+    "status": "진행중",
+    "year": 2026,
+    "squad": "검색",
+    "date": "2026-09-00"
   }
 ]
