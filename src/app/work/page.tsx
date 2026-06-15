@@ -405,7 +405,7 @@ export default function WorkPage() {
       <header className="bg-slate-800 sticky top-0 z-40">
         <div className="max-w-6xl mx-auto px-6 py-3 flex items-center gap-6">
           <button
-            onClick={() => router.back()}
+            onClick={() => router.push("/")}
             className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center text-white hover:bg-white/30 transition-colors text-sm shrink-0"
           >
             ←
