@@ -254,11 +254,12 @@ function ProjectChatModal({ project, onClose }: { project: Project; onClose: () 
                       {/* 작성자 + 시간 + 삭제 */}
                       <div className="flex items-center justify-between mb-2">
                         <div className="flex items-center gap-1.5">
-                          <div
-                            className="w-5 h-5 rounded-full flex items-center justify-center text-white text-[10px] font-bold shrink-0"
-                            style={{ backgroundColor: squadCol }}
-                          >
-                            김
+                          <div className="w-6 h-6 rounded-full bg-slate-800 overflow-hidden shrink-0 relative">
+                            <img
+                              src="/mijung-nobg.png"
+                              alt="김미정"
+                              className="absolute bottom-0 left-1/2 -translate-x-1/2 h-[90%] object-contain"
+                            />
                           </div>
                           <span className="text-xs font-semibold text-gray-600">김미정</span>
                         </div>
