@@ -266,7 +266,7 @@ function ProjectChatModal({ project, onClose }: { project: Project; onClose: () 
                           <span className="text-xs text-gray-400">{formatTime(msg.timestamp)}</span>
                           <button
                             onClick={() => deleteMessage(msg.id)}
-                            className="text-gray-300 hover:text-gray-500 text-sm opacity-0 group-hover:opacity-100 transition-opacity leading-none"
+                            className="text-gray-300 hover:text-gray-500 text-sm transition-opacity leading-none md:opacity-0 md:group-hover:opacity-100"
                           >
                             ×
                           </button>
