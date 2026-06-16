@@ -245,22 +245,53 @@ function ProjectChatModal({ project, onClose }: { project: Project; onClose: () 
               </div>
             ) : (
               <div className="space-y-3">
-                {messages.map((msg) => (
-                  <div key={msg.id} className="flex flex-col items-end gap-1 group">
-                    <div className="flex items-end gap-2">
-                      <button
-                        onClick={() => deleteMessage(msg.id)}
-                        className="text-gray-300 hover:text-gray-500 text-xs opacity-0 group-hover:opacity-100 transition-opacity"
-                      >
-                        ×
-                      </button>
-                      <div className="max-w-[78%] bg-slate-800 text-white text-sm px-3.5 py-2.5 rounded-2xl rounded-tr-sm whitespace-pre-wrap break-words">
-                        {msg.text}
+                {messages.map((msg) => {
+                  const urlRegex = /(https?:\/\/[^\s]+)/g;
+                  const urls: string[] = msg.text.match(urlRegex) ?? [];
+                  const bodyText = msg.text.replace(urlRegex, "").trim();
+                  return (
+                    <div key={msg.id} className="group relative bg-white border border-gray-100 rounded-2xl px-4 pt-3 pb-3 shadow-sm">
+                      {/* 작성자 + 시간 + 삭제 */}
+                      <div className="flex items-center justify-between mb-2">
+                        <div className="flex items-center gap-1.5">
+                          <div
+                            className="w-5 h-5 rounded-full flex items-center justify-center text-white text-[10px] font-bold shrink-0"
+                            style={{ backgroundColor: squadCol }}
+                          >
+                            나
+                          </div>
+                          <span className="text-xs font-semibold text-gray-600">나</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <span className="text-xs text-gray-400">{formatTime(msg.timestamp)}</span>
+                          <button
+                            onClick={() => deleteMessage(msg.id)}
+                            className="text-gray-300 hover:text-gray-500 text-sm opacity-0 group-hover:opacity-100 transition-opacity leading-none"
+                          >
+                            ×
+                          </button>
+                        </div>
                       </div>
+                      {/* 본문 */}
+                      {bodyText && (
+                        <p className="text-sm text-gray-700 whitespace-pre-wrap break-words leading-relaxed">{bodyText}</p>
+                      )}
+                      {/* URL 박스 */}
+                      {urls.map((url, i) => (
+                        <a
+                          key={i}
+                          href={url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="mt-2 flex items-center gap-2 bg-gray-50 rounded-xl px-3 py-2 text-xs text-blue-500 truncate hover:bg-gray-100 transition-colors"
+                        >
+                          <span className="shrink-0">🔗</span>
+                          <span className="truncate">{url}</span>
+                        </a>
+                      ))}
                     </div>
-                    <span className="text-xs text-gray-400">{formatTime(msg.timestamp)}</span>
-                  </div>
-                ))}
+                  );
+                })}
                 <div ref={bottomRef} />
               </div>
             )}
