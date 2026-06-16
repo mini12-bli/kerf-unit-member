@@ -177,11 +177,14 @@ function ProjectChatModal({ project, onClose }: { project: Project; onClose: () 
     setTimeout(onClose, 250);
   }
 
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+
   function addMessage() {
     const text = input.trim();
     if (!text) return;
     setMessages((prev) => [...prev, { id: `msg_${Date.now()}`, text, timestamp: new Date().toISOString() }]);
     setInput("");
+    if (textareaRef.current) textareaRef.current.style.height = "auto";
   }
 
   function formatTime(iso: string) {
@@ -297,14 +300,24 @@ function ProjectChatModal({ project, onClose }: { project: Project; onClose: () 
           </div>
 
           {/* 입력 */}
-          <div className="flex gap-2 px-4 py-3 border-t border-gray-100 shrink-0">
-            <input
-              type="text"
+          <div className="flex gap-2 px-4 py-3 border-t border-gray-100 shrink-0 items-end">
+            <textarea
               value={input}
-              onChange={(e) => setInput(e.target.value)}
-              onKeyDown={(e) => e.key === "Enter" && addMessage()}
-              placeholder="히스토리 추가..."
-              className="flex-1 border border-gray-200 rounded-xl px-3 py-2 bg-gray-50 text-gray-700 placeholder-gray-300 focus:outline-none"
+              onChange={(e) => {
+                setInput(e.target.value);
+                e.target.style.height = "auto";
+                e.target.style.height = Math.min(e.target.scrollHeight, 120) + "px";
+              }}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && !e.shiftKey) {
+                  e.preventDefault();
+                  addMessage();
+                }
+              }}
+              placeholder="히스토리 추가... (Shift+Enter 줄바꿈)"
+              ref={textareaRef}
+              rows={1}
+              className="flex-1 border border-gray-200 rounded-xl px-3 py-2 bg-gray-50 text-gray-700 placeholder-gray-300 focus:outline-none resize-none overflow-hidden"
               style={{ fontSize: 16 }}
             />
             <button
