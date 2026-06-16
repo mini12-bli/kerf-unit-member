@@ -212,18 +212,23 @@ function ProjectChatModal({ project, onClose }: { project: Project; onClose: () 
     };
   }, []);
 
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
+    return () => { document.body.style.overflow = ""; };
+  }, []);
+
   return (
-    <div
-      className="fixed inset-0 z-50 flex items-end md:items-center justify-center transition-[padding] duration-100"
-      style={{ paddingBottom: keyboardHeight }}
-    >
+    <div className="fixed inset-0 z-50 flex items-end md:items-center justify-center">
+      {/* backdrop - 항상 전체 화면 덮음 */}
       <div
         className={`absolute inset-0 bg-black/50 transition-opacity duration-250 ${visible ? "opacity-100" : "opacity-0"}`}
         onClick={handleClose}
       />
 
+      {/* 모달 - 키보드 높이만큼 위로 이동 */}
       <div
-        className={`relative w-full md:max-w-3xl h-[98dvh] md:h-[80vh] bg-white rounded-t-3xl md:rounded-2xl shadow-2xl flex flex-col md:flex-row overflow-hidden transition-transform duration-250 ease-out ${visible ? "translate-y-0 md:scale-100" : "translate-y-full md:scale-95"}`}
+        className={`relative w-full md:max-w-3xl h-[98dvh] md:h-[80vh] bg-white rounded-t-3xl md:rounded-2xl shadow-2xl flex flex-col md:flex-row overflow-hidden transition-transform duration-250 ease-out ${visible ? "md:scale-100" : "translate-y-full md:scale-95"}`}
+        style={{ transform: visible ? `translateY(-${keyboardHeight}px)` : "translateY(100%)" }}
       >
         {/* 좌측: 채팅 */}
         <div className="flex flex-col flex-1 min-h-0">
