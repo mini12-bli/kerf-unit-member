@@ -206,8 +206,8 @@ function ProjectChatModal({ project, onClose }: { project: Project; onClose: () 
         {/* 좌측: 채팅 */}
         <div className="flex flex-col flex-1 min-h-0">
           {/* 헤더 */}
-          <div className="flex items-center gap-3 px-4 py-3 border-b border-gray-100 shrink-0">
-            <div className="flex justify-center pt-0 md:hidden absolute left-1/2 -translate-x-1/2 top-2">
+          <div className="flex items-center px-4 py-3 border-b border-gray-100 shrink-0">
+            <div className="md:hidden absolute left-1/2 -translate-x-1/2 top-2">
               <div className="w-8 h-1 rounded-full bg-gray-200" />
             </div>
             <button
@@ -216,7 +216,8 @@ function ProjectChatModal({ project, onClose }: { project: Project; onClose: () 
             >
               ✕
             </button>
-            <div className="flex items-center gap-2 min-w-0 mt-2 md:mt-0">
+            {/* 데스크톱에서만 헤더에 과제 정보 표시 */}
+            <div className="hidden md:flex items-center gap-2 min-w-0 ml-3">
               <span
                 className="text-xs font-semibold px-2 py-0.5 rounded-full text-white shrink-0"
                 style={{ backgroundColor: squadCol }}
@@ -228,15 +229,10 @@ function ProjectChatModal({ project, onClose }: { project: Project; onClose: () 
           </div>
 
           {/* 모바일 과제 정보 바 */}
-          <div className="md:hidden flex items-center gap-3 px-4 py-2.5 bg-gray-50 border-b border-gray-100 shrink-0">
-            <div
-              className="w-8 h-8 rounded-full flex items-center justify-center text-white text-sm font-bold shrink-0"
-              style={{ backgroundColor: squadCol }}
-            >
-              {displaySquad(project.squad ?? "").slice(0, 1)}
-            </div>
+          <div className="md:hidden flex items-center gap-3 px-4 py-3 bg-gray-50 border-b border-gray-100 shrink-0">
             <div className="flex-1 min-w-0">
-              <p className="text-xs text-gray-500 truncate">{project.name}</p>
+              <p className="text-xs text-gray-400 mb-0.5">{displaySquad(project.squad ?? "")}</p>
+              <p className="text-sm font-bold text-gray-800 truncate">{project.name}</p>
             </div>
             <StatusChip status={project.status} date={project.date} completedDate={project.completedDate} />
           </div>
