@@ -258,9 +258,9 @@ function ProjectChatModal({ project, onClose }: { project: Project; onClose: () 
                             className="w-5 h-5 rounded-full flex items-center justify-center text-white text-[10px] font-bold shrink-0"
                             style={{ backgroundColor: squadCol }}
                           >
-                            나
+                            김
                           </div>
-                          <span className="text-xs font-semibold text-gray-600">나</span>
+                          <span className="text-xs font-semibold text-gray-600">김미정</span>
                         </div>
                         <div className="flex items-center gap-2">
                           <span className="text-xs text-gray-400">{formatTime(msg.timestamp)}</span>
