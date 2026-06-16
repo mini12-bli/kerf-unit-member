@@ -1,5 +1,5 @@
 "use client";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import unitWorkData from "@/data/unitWork.json";
 import { Project } from "@/types";
@@ -33,6 +33,12 @@ const squadColor: Record<string, string> = {
 };
 
 type Status = Project["status"];
+
+type ChatMessage = {
+  id: string;
+  text: string;
+  timestamp: string;
+};
 
 const STATUS_META: Record<Status, { label: string; dotClass: string; badgeClass: string }> = {
   검토중: { label: "REVIEW", dotClass: "bg-amber-400", badgeClass: "bg-amber-100 text-amber-700" },
@@ -91,10 +97,13 @@ function displaySquad(squad: string): string {
   return squad === "전체" ? "공통" : squad;
 }
 
-function ProjectRow({ project }: { project: Project }) {
+function ProjectRow({ project, onClick }: { project: Project; onClick?: () => void }) {
   const squad = project.squad;
   return (
-    <li className="flex items-center justify-between gap-3 py-3 border-b border-gray-100 last:border-0">
+    <li
+      className="flex items-center justify-between gap-3 py-3 border-b border-gray-100 last:border-0 cursor-pointer active:bg-gray-50 transition-colors"
+      onClick={onClick}
+    >
       <div className="flex items-center gap-0 min-w-0">
         {squad && (
           <span className="text-sm text-gray-400 shrink-0">[{displaySquad(squad)}]&nbsp;</span>
@@ -135,6 +144,199 @@ function StatusSection({ status, projects }: { status: Status; projects: Project
           <ProjectRow key={p.id} project={p} />
         ))}
       </ul>
+    </div>
+  );
+}
+
+function ProjectChatModal({ project, onClose }: { project: Project; onClose: () => void }) {
+  const [messages, setMessages] = useState<ChatMessage[]>([]);
+  const [input, setInput] = useState("");
+  const [visible, setVisible] = useState(false);
+  const bottomRef = useRef<HTMLDivElement>(null);
+  const storageKey = `chat_${project.id}`;
+  const squadCol = squadColor[project.squad ?? ""] ?? "#94a3b8";
+
+  useEffect(() => {
+    try {
+      const stored = localStorage.getItem(storageKey);
+      if (stored) setMessages(JSON.parse(stored));
+    } catch {}
+    requestAnimationFrame(() => setVisible(true));
+  }, [storageKey]);
+
+  useEffect(() => {
+    localStorage.setItem(storageKey, JSON.stringify(messages));
+  }, [messages, storageKey]);
+
+  useEffect(() => {
+    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
+
+  function handleClose() {
+    setVisible(false);
+    setTimeout(onClose, 250);
+  }
+
+  function addMessage() {
+    const text = input.trim();
+    if (!text) return;
+    setMessages((prev) => [...prev, { id: `msg_${Date.now()}`, text, timestamp: new Date().toISOString() }]);
+    setInput("");
+  }
+
+  function formatTime(iso: string) {
+    const d = new Date(iso);
+    return `${d.getMonth() + 1}/${d.getDate()} ${String(d.getHours()).padStart(2, "0")}:${String(d.getMinutes()).padStart(2, "0")}`;
+  }
+
+  function deleteMessage(id: string) {
+    setMessages((prev) => prev.filter((m) => m.id !== id));
+  }
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-end md:items-center justify-center">
+      <div
+        className={`absolute inset-0 bg-black/50 transition-opacity duration-250 ${visible ? "opacity-100" : "opacity-0"}`}
+        onClick={handleClose}
+      />
+
+      <div
+        className={`relative w-full md:max-w-3xl h-[92vh] md:h-[80vh] bg-white rounded-t-3xl md:rounded-2xl shadow-2xl flex flex-col md:flex-row overflow-hidden transition-transform duration-250 ease-out ${visible ? "translate-y-0 md:scale-100" : "translate-y-full md:scale-95"}`}
+      >
+        {/* 좌측: 채팅 */}
+        <div className="flex flex-col flex-1 min-h-0">
+          {/* 헤더 */}
+          <div className="flex items-center gap-3 px-4 py-3 border-b border-gray-100 shrink-0">
+            <div className="flex justify-center pt-0 md:hidden absolute left-1/2 -translate-x-1/2 top-2">
+              <div className="w-8 h-1 rounded-full bg-gray-200" />
+            </div>
+            <button
+              onClick={handleClose}
+              className="w-7 h-7 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 hover:bg-gray-200 text-sm shrink-0 mt-2 md:mt-0"
+            >
+              ✕
+            </button>
+            <div className="flex items-center gap-2 min-w-0 mt-2 md:mt-0">
+              <span
+                className="text-xs font-semibold px-2 py-0.5 rounded-full text-white shrink-0"
+                style={{ backgroundColor: squadCol }}
+              >
+                {displaySquad(project.squad ?? "")}
+              </span>
+              <span className="text-sm font-bold text-gray-800 truncate">{project.name}</span>
+            </div>
+          </div>
+
+          {/* 모바일 과제 정보 바 */}
+          <div className="md:hidden flex items-center gap-3 px-4 py-2.5 bg-gray-50 border-b border-gray-100 shrink-0">
+            <div
+              className="w-8 h-8 rounded-full flex items-center justify-center text-white text-sm font-bold shrink-0"
+              style={{ backgroundColor: squadCol }}
+            >
+              {displaySquad(project.squad ?? "").slice(0, 1)}
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="text-xs text-gray-500 truncate">{project.name}</p>
+            </div>
+            <StatusChip status={project.status} date={project.date} completedDate={project.completedDate} />
+          </div>
+
+          {/* 메시지 영역 */}
+          <div className="flex-1 overflow-y-auto px-4 py-4">
+            {messages.length === 0 ? (
+              <div className="flex flex-col items-center justify-center h-full gap-2 pb-10">
+                <div
+                  className="w-12 h-12 rounded-full flex items-center justify-center text-white text-lg font-bold"
+                  style={{ backgroundColor: squadCol }}
+                >
+                  {displaySquad(project.squad ?? "").slice(0, 1)}
+                </div>
+                <p className="text-sm font-semibold text-gray-700">{project.name}</p>
+                <p className="text-xs text-gray-400">히스토리를 기록해보세요</p>
+              </div>
+            ) : (
+              <div className="space-y-3">
+                {messages.map((msg) => (
+                  <div key={msg.id} className="flex flex-col items-end gap-1 group">
+                    <div className="flex items-end gap-2">
+                      <button
+                        onClick={() => deleteMessage(msg.id)}
+                        className="text-gray-300 hover:text-gray-500 text-xs opacity-0 group-hover:opacity-100 transition-opacity"
+                      >
+                        ×
+                      </button>
+                      <div className="max-w-[78%] bg-slate-800 text-white text-sm px-3.5 py-2.5 rounded-2xl rounded-tr-sm whitespace-pre-wrap break-words">
+                        {msg.text}
+                      </div>
+                    </div>
+                    <span className="text-xs text-gray-400">{formatTime(msg.timestamp)}</span>
+                  </div>
+                ))}
+                <div ref={bottomRef} />
+              </div>
+            )}
+          </div>
+
+          {/* 입력 */}
+          <div className="flex gap-2 px-4 py-3 border-t border-gray-100 shrink-0">
+            <input
+              type="text"
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              onKeyDown={(e) => e.key === "Enter" && addMessage()}
+              placeholder="히스토리 추가..."
+              className="flex-1 border border-gray-200 rounded-xl px-3 py-2 bg-gray-50 text-gray-700 placeholder-gray-300 focus:outline-none"
+              style={{ fontSize: 16 }}
+            />
+            <button
+              onClick={addMessage}
+              disabled={!input.trim()}
+              className="w-9 h-9 rounded-xl bg-slate-800 text-white flex items-center justify-center text-base disabled:opacity-30 hover:bg-slate-700 transition-all shrink-0"
+            >
+              ↑
+            </button>
+          </div>
+        </div>
+
+        {/* 우측: 과제 정보 패널 (데스크톱) */}
+        <div className="hidden md:flex w-64 flex-col border-l border-gray-100 bg-gray-50 shrink-0">
+          <div className="h-1.5 w-full shrink-0" style={{ backgroundColor: squadCol }} />
+          <div className="flex flex-col items-center px-5 py-6 gap-3">
+            <div
+              className="w-16 h-16 rounded-full flex items-center justify-center text-white text-2xl font-bold shadow-md"
+              style={{ backgroundColor: squadCol }}
+            >
+              {displaySquad(project.squad ?? "").slice(0, 1)}
+            </div>
+            <div className="text-center">
+              <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide">{displaySquad(project.squad ?? "")}</p>
+              <p className="text-sm font-bold text-gray-800 mt-1 leading-snug">{project.name}</p>
+            </div>
+          </div>
+          <div className="px-4 space-y-2.5 overflow-y-auto">
+            <div className="bg-white rounded-xl px-3 py-2.5 shadow-sm">
+              <p className="text-xs text-gray-400 mb-1.5">상태</p>
+              <StatusChip status={project.status} date={project.date} completedDate={project.completedDate} />
+            </div>
+            {project.date && (
+              <div className="bg-white rounded-xl px-3 py-2.5 shadow-sm">
+                <p className="text-xs text-gray-400 mb-1">목표일</p>
+                <p className="text-sm font-semibold text-gray-700">{formatMMDD(project.date)}</p>
+              </div>
+            )}
+            {project.milestone && (
+              <div className="bg-white rounded-xl px-3 py-2.5 shadow-sm">
+                <p className="text-xs text-gray-400 mb-1">마일스톤</p>
+                <p className="text-sm font-semibold text-gray-700">{project.milestone}</p>
+              </div>
+            )}
+            <div className="bg-white rounded-xl px-3 py-2.5 shadow-sm">
+              <p className="text-xs text-gray-400 mb-1">히스토리</p>
+              <p className="text-sm font-semibold text-gray-700">{messages.length}개</p>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
@@ -294,6 +496,7 @@ export default function WorkPage() {
   const [showAddModal, setShowAddModal] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
 
   const allProjects = [...unitWork, ...addedProjects];
 
@@ -347,7 +550,7 @@ export default function WorkPage() {
                   <span className="text-xs text-gray-400">{teamProjects.length}</span>
                 </div>
                 <ul className="bg-white rounded-2xl shadow-sm px-2 -mx-4">
-                  {applySort(teamProjects, true).map((p) => <ProjectRow key={p.id} project={p} />)}
+                  {applySort(teamProjects, true).map((p) => <ProjectRow key={p.id} project={p} onClick={() => setSelectedProject(p)} />)}
                 </ul>
               </div>
             );
@@ -367,7 +570,7 @@ export default function WorkPage() {
                 <span className="text-xs text-gray-400">{active.length}</span>
               </div>
               <ul className="bg-white rounded-2xl shadow-sm px-2 -mx-4">
-                {applySort(active, true).map((p) => <ProjectRow key={p.id} project={p} />)}
+                {applySort(active, true).map((p) => <ProjectRow key={p.id} project={p} onClick={() => setSelectedProject(p)} />)}
               </ul>
             </div>
           )}
@@ -379,7 +582,7 @@ export default function WorkPage() {
                 <span className="text-xs text-gray-400">{past.length}</span>
               </div>
               <ul className="bg-white rounded-2xl shadow-sm px-2 -mx-4">
-                {applySort(past).map((p) => <ProjectRow key={p.id} project={p} />)}
+                {applySort(past).map((p) => <ProjectRow key={p.id} project={p} onClick={() => setSelectedProject(p)} />)}
               </ul>
             </div>
           )}
@@ -391,7 +594,7 @@ export default function WorkPage() {
                 <span className="text-xs text-gray-400">{dropped.length}</span>
               </div>
               <ul className="bg-white rounded-2xl shadow-sm px-2 -mx-4">
-                {applySort(dropped).map((p) => <ProjectRow key={p.id} project={p} />)}
+                {applySort(dropped).map((p) => <ProjectRow key={p.id} project={p} onClick={() => setSelectedProject(p)} />)}
               </ul>
             </div>
           )}
@@ -506,7 +709,7 @@ export default function WorkPage() {
             }
             return (
               <ul className="bg-white rounded-2xl shadow-sm px-2 -mx-4">
-                {results.map((p) => <ProjectRow key={p.id} project={p} />)}
+                {results.map((p) => <ProjectRow key={p.id} project={p} onClick={() => setSelectedProject(p)} />)}
               </ul>
             );
           })()
@@ -526,6 +729,13 @@ export default function WorkPage() {
           year={selectedYear}
           onClose={() => setShowAddModal(false)}
           onAdd={(p) => setAddedProjects((prev) => [...prev, p])}
+        />
+      )}
+
+      {selectedProject && (
+        <ProjectChatModal
+          project={selectedProject}
+          onClose={() => setSelectedProject(null)}
         />
       )}
     </main>
