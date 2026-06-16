@@ -250,15 +250,13 @@ function ProjectChatModal({ project, onClose }: { project: Project; onClose: () 
                   const urls: string[] = msg.text.match(urlRegex) ?? [];
                   const bodyText = msg.text.replace(urlRegex, "").trim();
                   return (
-                    <div key={msg.id} className="group relative bg-white border border-gray-100 rounded-2xl px-4 pt-3 pb-3 shadow-sm">
+                    <div key={msg.id} className="group relative bg-sky-50 rounded-2xl px-4 pt-3 pb-3">
                       {/* 작성자 + 시간 + 삭제 */}
                       <div className="flex items-center justify-between mb-2">
                         <div className="flex items-center gap-1.5">
-                          <img
-                            src="/mijung-nobg.png"
-                            alt="김미정"
-                            className="w-6 h-6 object-contain shrink-0"
-                          />
+                          <div className="w-5 h-5 rounded-full flex items-center justify-center text-white text-[10px] font-bold shrink-0 bg-slate-700">
+                            김
+                          </div>
                           <span className="text-xs font-semibold text-gray-600">김미정</span>
                         </div>
                         <div className="flex items-center gap-2">
