@@ -252,7 +252,7 @@ function ProjectChatModal({ project, onClose }: { project: Project; onClose: () 
                   return (
                     <div key={msg.id} className="group relative bg-sky-50 rounded-2xl px-4 pt-3 pb-3">
                       {/* 작성자 + 시간 + 삭제 */}
-                      <div className="flex items-center justify-between mb-2">
+                      <div className="flex items-center justify-between pb-2 border-b border-sky-100">
                         <div className="flex items-center gap-1.5">
                           <div className="w-5 h-5 rounded-full flex items-center justify-center text-white text-[10px] font-bold shrink-0 bg-slate-700">
                             김
@@ -271,7 +271,9 @@ function ProjectChatModal({ project, onClose }: { project: Project; onClose: () 
                       </div>
                       {/* 본문 */}
                       {bodyText && (
-                        <p className="text-sm text-gray-700 whitespace-pre-wrap break-words leading-relaxed">{bodyText}</p>
+                        <p className={`text-sm text-gray-700 whitespace-pre-wrap break-words leading-relaxed pt-2 ${urls.length > 0 ? "pb-2 border-b border-sky-100" : ""}`}>
+                          {bodyText}
+                        </p>
                       )}
                       {/* URL 박스 */}
                       {urls.map((url, i) => (
@@ -280,7 +282,7 @@ function ProjectChatModal({ project, onClose }: { project: Project; onClose: () 
                           href={url}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="mt-2 flex items-center gap-2 bg-gray-50 rounded-xl px-3 py-2 text-xs text-blue-500 truncate hover:bg-gray-100 transition-colors"
+                          className="mt-2 flex items-center gap-2 bg-white/60 rounded-xl px-3 py-2 text-xs text-blue-500 truncate hover:bg-white/80 transition-colors"
                         >
                           <span className="shrink-0">🔗</span>
                           <span className="truncate">{url}</span>
