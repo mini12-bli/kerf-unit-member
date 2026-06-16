@@ -309,7 +309,7 @@ function ProjectChatModal({ project, onClose }: { project: Project; onClose: () 
                 e.target.style.height = Math.min(e.target.scrollHeight, 120) + "px";
               }}
               onKeyDown={(e) => {
-                if (e.key === "Enter" && !e.shiftKey) {
+                if (e.key === "Enter" && !e.shiftKey && !e.nativeEvent.isComposing) {
                   e.preventDefault();
                   addMessage();
                 }
