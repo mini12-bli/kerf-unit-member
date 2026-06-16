@@ -240,15 +240,8 @@ function ProjectChatModal({ project, onClose }: { project: Project; onClose: () 
           {/* 메시지 영역 */}
           <div className="flex-1 overflow-y-auto px-4 py-4">
             {messages.length === 0 ? (
-              <div className="flex flex-col items-center justify-center h-full gap-2 pb-10">
-                <div
-                  className="w-12 h-12 rounded-full flex items-center justify-center text-white text-lg font-bold"
-                  style={{ backgroundColor: squadCol }}
-                >
-                  {displaySquad(project.squad ?? "").slice(0, 1)}
-                </div>
-                <p className="text-sm font-semibold text-gray-700">{project.name}</p>
-                <p className="text-xs text-gray-400">히스토리를 기록해보세요</p>
+              <div className="flex items-center justify-center h-full">
+                <p className="text-sm text-gray-300">히스토리를 기록해보세요</p>
               </div>
             ) : (
               <div className="space-y-3">
